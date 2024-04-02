@@ -97,24 +97,24 @@
 
     const textHtml =
       `<ul class="comments">
-      <li class="comment">
-      <div class="comment-header">
-        <div>${inputName.value}</div>
-        <div>${date.toLocaleString("ru", year) + " " + date.toLocaleString('ru', time)}</div>
-      </div>
-      <div class="comment-body">
-        <div class="comment-text">
-        ${inputText.value} 
-        </div>
-      </div>
-      <div class="comment-footer">
-        <div class="likes">
-          <span class="likes-counter">0</span>
-          <button class="like-button"></button>
-        </div>
-      </div>
-    </li>
-  </ul>`
+        <li class="comment">
+          <div class="comment-header">
+            <div>${inputName.value}</div>
+            <div>${date.toLocaleString("ru", year) + " " + date.toLocaleString('ru', time)}</div>
+          </div>
+          <div class="comment-body">
+            <div class="comment-text">
+              ${inputText.value} 
+            </div>
+          </div>
+          <div class="comment-footer">
+            <div class="likes">
+              <span class="likes-counter">0</span>
+              <button class="like-button"></button>
+            </div>
+          </div>
+        </li>
+      </ul>`
 
     cardElement.innerHTML += textHtml;
     document.getElementById("nameTextId").value = "";

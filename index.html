@@ -9,7 +9,7 @@
 
 <body>
   <div class="container">
-    <ul class="comments">
+    <ul class="comments" id="commentsId">
       <li class="comment">
         <div class="comment-header">
           <div>Глеб Фокин</div>
@@ -46,10 +46,11 @@
       </li>
     </ul>
     <div class="add-form">
-      <input type="text" class="add-form-name" placeholder="Введите ваше имя" />
-      <textarea type="textarea" class="add-form-text" placeholder="Введите ваш коментарий" rows="4"></textarea>
+      <input type="text" class="add-form-name" id="nameTextId" placeholder="Введите ваше имя" />
+      <textarea type="textarea" class="add-form-text" id="commentTextId" placeholder="Введите ваш коментарий"
+        rows="4"></textarea>
       <div class="add-form-row">
-        <button class="add-form-button">Написать</button>
+        <button class="add-form-button" id="buttonId">Написать</button>
       </div>
     </div>
   </div>
@@ -73,8 +74,7 @@
     month: 'numeric',
     day: 'numeric',
   };
-
-  buttonElement.addEventListener('click', () => {
+  buttonElement.addEventListener("click", () => {
     const date = new Date();
     inputText.classList.remove("error");
     inputName.classList.remove("error");
@@ -96,8 +96,9 @@
     }
 
     const textHtml =
-      `‹li class="comment">
-      <div class="comment-header"›
+      `<ul class="comments">
+      <li class="comment">
+      <div class="comment-header">
         <div>${inputName.value}</div>
         <div>${date.toLocaleString("ru", year) + " " + date.toLocaleString('ru', time)}</div>
       </div>
@@ -112,34 +113,35 @@
           <button class="like-button"></button>
         </div>
       </div>
-    </li>`
+    </li>
+  </ul>`
 
     cardElement.innerHTML += textHtml;
-    document.getElementById("nameTextId").value = '';
-    document.getElementById("commentTextId").value = '';
+    document.getElementById("nameTextId").value = "";
+    document.getElementById("commentTextId").value = "";
     log(likeElement)
     log(textHtml)
   });
 
-  Array.from(likeElement).forEach((element) => {
-    element.addEventListener('click', () => {
-      const condition = element.className.split(" ")
-      if (condition.includes("-active-like")) {
-        element.classList.remove("-active-like");
-        const parent = element.parentElement;
-        const number = parent.firstElementChild;
-        let counter = +(number.innerText);
-        number.innerHTML = counter - 1;
-      } else {
-        element.classList.add("-active-like")
-        const parent = element.parentElement;
-        const number = parent.firstElementChild;
-        let counter = +(number.innerText);
-        number.innerHTML = counter + 1;
-        console.log("It works!");
-      }
-    })
-  })
+  // Array.from(likeElement).forEach((element) => {
+  //   element.addEventListener('click', () => {
+  //     const condition = element.className.split(" ")
+  //     if (condition.includes("-active-like")) {
+  //       element.classList.remove("-active-like");
+  //       const parent = element.parentElement;
+  //       const number = parent.firstElementChild;
+  //       let counter = +(number.innerText);
+  //       number.innerHTML = counter - 1;
+  //     } else {
+  //       element.classList.add("-active-like")
+  //       const parent = element.parentElement;
+  //       const number = parent.firstElementChild;
+  //       let counter = +(number.innerText);
+  //       number.innerHTML = counter + 1;
+  //       console.log("It works!");
+  //     }
+  //   })
+  // })
   console.log("It works!");
 </script>
 

@@ -74,7 +74,7 @@
     day: 'numeric',
   };
 
-  buttonElement.addEventListener('click', function (e) {
+  buttonElement.addEventListener('click', () => {
     const date = new Date();
     inputText.classList.remove("error");
     inputName.classList.remove("error");
@@ -94,7 +94,52 @@
         return;
       }
     }
+
+    const textHtml =
+      `‹li class="comment">
+      <div class="comment-header"›
+        <div>${inputName.value}</div>
+        <div>${date.toLocaleString("ru", year) + " " + date.toLocaleString('ru', time)}</div>
+      </div>
+      <div class="comment-body">
+        <div class="comment-text">
+        ${inputText.value} 
+        </div>
+      </div>
+      <div class="comment-footer">
+        <div class="likes">
+          <span class="likes-counter">0</span>
+          <button class="like-button"></button>
+        </div>
+      </div>
+    </li>`
+
+    cardElement.innerHTML += textHtml;
+    document.getElementById("nameTextId").value = '';
+    document.getElementById("commentTextId").value = '';
+    log(likeElement)
+    log(textHtml)
   });
+
+  Array.from(likeElement).forEach((element) => {
+    element.addEventListener('click', () => {
+      const condition = element.className.split(" ")
+      if (condition.includes("-active-like")) {
+        element.classList.remove("-active-like");
+        const parent = element.parentElement;
+        const number = parent.firstElementChild;
+        let counter = +(number.innerText);
+        number.innerHTML = counter - 1;
+      } else {
+        element.classList.add("-active-like")
+        const parent = element.parentElement;
+        const number = parent.firstElementChild;
+        let counter = +(number.innerText);
+        number.innerHTML = counter + 1;
+        console.log("It works!");
+      }
+    })
+  })
   console.log("It works!");
 </script>
 

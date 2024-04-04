@@ -1,22 +1,43 @@
 const { log } = console;
 const commentList = document.querySelector(".commentList");
 const commentListData = [
-    {
-        name: "Глеб Фокин",
-        time: "12.02.22 12:18",
-        comment: "Это будет первый комментарий на этой странице",
-        likes: 3,
-    },
-    {
-        name: "Варвара Н.",
-        time: "13.02.22 19:22",
-        comment: "Мне нравится как оформлена эта страница! ❤",
-        likes: 75,
-    },
+  {
+    name: "Глеб Фокин",
+    time: "12.02.22 12:18",
+    comment: "Это будет первый комментарий на этой странице",
+    likes: 3,
+  },
+  {
+    name: "Варвара Н.",
+    time: "13.02.22 19:22",
+    comment: "Мне нравится как оформлена эта страница! ❤",
+    likes: 75,
+  },
 ];
 
 renderCommentList = () => {
-    comment
+  commentList.innerHTML = commentListData
+    .map((userComment) => {
+      return
+      `<li class="comment">
+        <div class="comment-header">
+          <div>${userComment.name}</div>
+          <div>${userComment.time}</div>
+        </div>
+        <div class="comment-body">
+          <div class="comment-text">
+          ${userComment.comment}
+          </div>
+        </div>
+        <div class="comment-footer">
+          <div class="likes">
+            <span class="likes-counter">${userComment.likes}</span>
+            <button class="like-button"></button>
+          </div>
+        </div>
+      </li>`;
+    })
+    .join("");
 }
 "use strict";
 const cardElement = document.getElementById("commentsId");
@@ -26,37 +47,37 @@ const inputText = document.getElementById("commentTextId");
 const likeElement = document.getElementsByClassName("like-button");
 
 let time = {
-    hour: 'numeric',
-    minute: 'numeric',
+  hour: 'numeric',
+  minute: 'numeric',
 };
 let year = {
-    year: 'numeric',
-    month: 'numeric',
-    day: 'numeric',
+  year: 'numeric',
+  month: 'numeric',
+  day: 'numeric',
 };
 buttonElement.addEventListener("click", () => {
-    const date = new Date();
-    inputText.classList.remove("error");
-    inputName.classList.remove("error");
+  const date = new Date();
+  inputText.classList.remove("error");
+  inputName.classList.remove("error");
 
-    if ((inputText.value.length === 0) || (inputName.value.length === 0)) {
-        if ((inputText.value.length === 0) && (inputName.value.length === 0)) {
-            inputName.classList.add("error");
-            inputText.classList.add("error");
-            return;
-        }
-        else if (inputName.value.length === 0) {
-            inputName.classList.add("error");
-            return;
-        }
-        else if (inputText.value.length === 0) {
-            inputText.classList.add("error");
-            return;
-        }
+  if ((inputText.value.length === 0) || (inputName.value.length === 0)) {
+    if ((inputText.value.length === 0) && (inputName.value.length === 0)) {
+      inputName.classList.add("error");
+      inputText.classList.add("error");
+      return;
     }
+    else if (inputName.value.length === 0) {
+      inputName.classList.add("error");
+      return;
+    }
+    else if (inputText.value.length === 0) {
+      inputText.classList.add("error");
+      return;
+    }
+  }
 
-    const textHtml =
-        `<ul class="comments">
+  const textHtml =
+    `<ul class="comments">
         <li class="comment">
           <div class="comment-header">
             <div>${inputName.value}</div>
@@ -76,11 +97,11 @@ buttonElement.addEventListener("click", () => {
         </li>
       </ul>`
 
-    cardElement.innerHTML += textHtml;
-    document.getElementById("nameTextId").value = "";
-    document.getElementById("commentTextId").value = "";
-    log(likeElement)
-    log(textHtml)
+  cardElement.innerHTML += textHtml;
+  document.getElementById("nameTextId").value = "";
+  document.getElementById("commentTextId").value = "";
+  log(likeElement)
+  log(textHtml)
 });
 
 console.log("It works!");

@@ -7,7 +7,6 @@ const cardElement = document.getElementById("comments");
 const buttonElement = document.getElementById("add-buttonId");
 const inputName = document.getElementById("nameTextId");
 const inputText = document.getElementById("commentTextId");
-const likeElement = document.getElementsByClassName("like-button");
 
 let time = {
   hour: 'numeric',
@@ -36,8 +35,27 @@ const users = [
   },
 ];
 
+const addLikeClickButton = () => {
+  const clickLikes = document.querySelectorAll('.like-button');
+
+  for (const clickLike of clickLikes) {
+    clickLike.addEventListener("click", () => {
+      const index = clickLike.dataset.index;
+      console.log(index);
+      if (users[index].likeStatus === false) {
+        users[index].likes++;
+        users[index].likeStatus = true;
+      } else if (users[index].likeStatus === true) {
+        users[index].likes--;
+        users[index].likeStatus = false;
+      }
+      renderCommentList();
+    });
+  }
+}
+
 renderCommentList = () => {
-  const userHtml = users.map((user) => {
+  const userHtml = users.map((user, index) => {
     return `<li class="comment">
         <div class="comment-header">
           <div>${user.name}</div>
@@ -51,12 +69,13 @@ renderCommentList = () => {
         <div class="comment-footer">
           <div class="likes">
             <span class="likes-counter">${user.likes}</span>
-            <button class="like-button"></button>
+            <button data-index="${index}" class="like-button ${user.likeStatus === true ? '-active-like' : ''}"></button>
           </div>
         </div>
       </li>`
   }).join('');
   cardElement.innerHTML = userHtml;
+  addLikeClickButton();
 };
 renderCommentList();
 
@@ -67,17 +86,6 @@ document.addEventListener("keyup", (event) => {
     return;
   }
 });
-
-// const initEventList = () => {
-//   const commentList = document.querySelectorAll(".commentList");
-//   for (const commetList of commentsList) {
-//     commentList.addEventListener("click", () => {
-//       if (commentList.likeStatus() === false) {
-//         commentList.likeStatus() = true;
-//       } else commentList.likeStatus() = false;
-//     });
-//   }
-// };
 
 buttonElement.addEventListener("click", () => {
   const date = new Date();
@@ -109,11 +117,11 @@ buttonElement.addEventListener("click", () => {
   });
 
   renderCommentList();
+  addLikeClickButton();
 
   inputName.value = "";
   inputText.value = "";
 });
 
 renderCommentList();
-
 console.log("It works!");

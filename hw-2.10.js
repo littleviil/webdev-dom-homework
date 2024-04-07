@@ -1,47 +1,10 @@
 const { log } = console;
-const commentList = document.querySelector(".commentList");
-const commentListData = [
-  {
-    name: "Глеб Фокин",
-    time: "12.02.22 12:18",
-    comment: "Это будет первый комментарий на этой странице",
-    likes: 3,
-  },
-  {
-    name: "Варвара Н.",
-    time: "13.02.22 19:22",
-    comment: "Мне нравится как оформлена эта страница! ❤",
-    likes: 75,
-  },
-];
-
-renderCommentList = () => {
-  commentList.innerHTML = commentListData
-    .map((userComment) => {
-      return
-      `<li class="comment">
-        <div class="comment-header">
-          <div>${userComment.name}</div>
-          <div>${userComment.time}</div>
-        </div>
-        <div class="comment-body">
-          <div class="comment-text">
-          ${userComment.comment}
-          </div>
-        </div>
-        <div class="comment-footer">
-          <div class="likes">
-            <span class="likes-counter">${userComment.likes}</span>
-            <button class="like-button"></button>
-          </div>
-        </div>
-      </li>`;
-    })
-    .join("");
-}
 "use strict";
-const cardElement = document.getElementById("commentsId");
-const buttonElement = document.getElementById("buttonId");
+
+const commentsList = document.querySelectorAll(".commentsList");
+
+const cardElement = document.getElementById("comments");
+const buttonElement = document.getElementById("add-buttonId");
 const inputName = document.getElementById("nameTextId");
 const inputText = document.getElementById("commentTextId");
 const likeElement = document.getElementsByClassName("like-button");
@@ -55,6 +18,67 @@ let year = {
   month: 'numeric',
   day: 'numeric',
 };
+
+const users = [
+  {
+    name: "Глеб Фокин",
+    time: "12.02.22 12:18",
+    comment: "Это будет первый комментарий на этой странице",
+    likes: 3,
+    likeStatus: false,
+  },
+  {
+    name: "Варвара Н.",
+    time: "13.02.22 19:22",
+    comment: "Мне нравится как оформлена эта страница! ❤",
+    likes: 75,
+    likeStatus: true,
+  },
+];
+
+renderCommentList = () => {
+  const userHtml = users.map((user) => {
+    return `<li class="comment">
+        <div class="comment-header">
+          <div>${user.name}</div>
+          <div>${user.time}</div>
+        </div>
+        <div class="comment-body">
+          <div class="comment-text">
+          ${user.comment}
+          </div>
+        </div>
+        <div class="comment-footer">
+          <div class="likes">
+            <span class="likes-counter">${user.likes}</span>
+            <button class="like-button"></button>
+          </div>
+        </div>
+      </li>`
+  }).join('');
+  cardElement.innerHTML = userHtml;
+};
+renderCommentList();
+
+//Enter
+document.addEventListener("keyup", (event) => {
+  if (event.code === 'Enter') {
+    document.getElementById("add-buttonId").click();
+    return;
+  }
+});
+
+// const initEventList = () => {
+//   const commentList = document.querySelectorAll(".commentList");
+//   for (const commetList of commentsList) {
+//     commentList.addEventListener("click", () => {
+//       if (commentList.likeStatus() === false) {
+//         commentList.likeStatus() = true;
+//       } else commentList.likeStatus() = false;
+//     });
+//   }
+// };
+
 buttonElement.addEventListener("click", () => {
   const date = new Date();
   inputText.classList.remove("error");
@@ -76,32 +100,20 @@ buttonElement.addEventListener("click", () => {
     }
   }
 
-  const textHtml =
-    `<ul class="comments">
-        <li class="comment">
-          <div class="comment-header">
-            <div>${inputName.value}</div>
-            <div>${date.toLocaleString("ru", year) + " " + date.toLocaleString('ru', time)}</div>
-          </div>
-          <div class="comment-body">
-            <div class="comment-text">
-              ${inputText.value} 
-            </div>
-          </div>
-          <div class="comment-footer">
-            <div class="likes">
-              <span class="likes-counter">0</span>
-              <button class="like-button"></button>
-            </div>
-          </div>
-        </li>
-      </ul>`
+  users.push({
+    name: inputName.value,
+    time: date.toLocaleString("ru", year) + " " + date.toLocaleString('ru', time),
+    comment: inputText.value,
+    likes: 0,
+    likeStatus: false,
+  });
 
-  cardElement.innerHTML += textHtml;
-  document.getElementById("nameTextId").value = "";
-  document.getElementById("commentTextId").value = "";
-  log(likeElement)
-  log(textHtml)
+  renderCommentList();
+
+  inputName.value = "";
+  inputText.value = "";
 });
+
+renderCommentList();
 
 console.log("It works!");

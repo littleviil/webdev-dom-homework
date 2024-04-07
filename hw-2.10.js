@@ -41,7 +41,6 @@ const addLikeClickButton = () => {
   for (const clickLike of clickLikes) {
     clickLike.addEventListener("click", () => {
       const index = clickLike.dataset.index;
-      console.log(index);
       if (users[index].likeStatus === false) {
         users[index].likes++;
         users[index].likeStatus = true;

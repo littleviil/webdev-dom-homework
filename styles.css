@@ -119,6 +119,7 @@ body {
 
   .add-form-row {
     display: flex;
+    gap: 15px;
     justify-content: flex-end;
   }
 
@@ -134,4 +135,8 @@ body {
 
   .add-form-button:hover {
     opacity: 0.9;
+  }
+
+  .active-input{
+    background-color: rgb(112, 112, 112);
   }

@@ -35,6 +35,22 @@ const users = [
   },
 ];
 
+//Блокировка кнопки "Написать"
+function checkInputForm() {
+  if (inputName.value.trim() === "" || inputText.value.trim() === "") {
+    //Блокировка и серый
+    buttonElement.disabled = true;
+    buttonElement.classList.add("active-input");
+  } else {
+    //Разблокировка и не серый
+    buttonElement.disabled = false;
+    buttonElement.classList.remove("active-input");
+  }
+};
+inputName.addEventListener("input", checkInputForm);
+inputText.addEventListener("input", checkInputForm);
+checkInputForm();
+
 const addLikeClickButton = () => {
   const clickLikes = document.querySelectorAll('.like-button');
 
@@ -50,8 +66,8 @@ const addLikeClickButton = () => {
       }
       renderCommentList();
     });
-  }
-}
+  };
+};
 
 renderCommentList = () => {
   const userHtml = users.map((user, index) => {
@@ -75,6 +91,7 @@ renderCommentList = () => {
   }).join('');
   cardElement.innerHTML = userHtml;
   addLikeClickButton();
+  checkInputForm();
 };
 renderCommentList();
 
@@ -105,7 +122,7 @@ buttonElement.addEventListener("click", () => {
       inputText.classList.add("error");
       return;
     }
-  }
+  };
 
   users.push({
     name: inputName.value,
@@ -120,7 +137,11 @@ buttonElement.addEventListener("click", () => {
 
   inputName.value = "";
   inputText.value = "";
+
+  checkInputForm();
 });
 
 renderCommentList();
+checkInputForm();
+
 console.log("It works!");

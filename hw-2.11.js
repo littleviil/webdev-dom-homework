@@ -7,73 +7,94 @@ const cardElement = document.getElementById("comments");
 const buttonElement = document.getElementById("add-buttonId");
 const inputName = document.getElementById("nameTextId");
 const inputText = document.getElementById("commentTextId");
+const deleteButton = document.getElementById("delete-button");
 
 let time = {
-  hour: 'numeric',
-  minute: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
 };
 let year = {
-  year: 'numeric',
-  month: 'numeric',
-  day: 'numeric',
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric',
 };
 
 const users = [
-  {
-    name: "Глеб Фокин",
-    time: "12.02.22 12:18",
-    comment: "Это будет первый комментарий на этой странице",
-    likes: 3,
-    likeStatus: false,
-  },
-  {
-    name: "Варвара Н.",
-    time: "13.02.22 19:22",
-    comment: "Мне нравится как оформлена эта страница! ❤",
-    likes: 75,
-    likeStatus: true,
-  },
+    {
+        name: "Глеб Фокин",
+        time: "12.02.22 12:18",
+        comment: "Это будет первый комментарий на этой странице",
+        likes: 3,
+        likeStatus: false,
+    },
+    {
+        name: "Варвара Н.",
+        time: "13.02.22 19:22",
+        comment: "Мне нравится как оформлена эта страница! ❤",
+        likes: 75,
+        likeStatus: true,
+    },
 ];
 
 //Блокировка кнопки "Написать"
 function checkInputForm() {
-  if (inputName.value.trim() === "" || inputText.value.trim() === "") {
-    //Блокировка и серый
-    buttonElement.disabled = true;
-    buttonElement.classList.add("active-input");
-  } else {
-    //Разблокировка и не серый
-    buttonElement.disabled = false;
-    buttonElement.classList.remove("active-input");
-  }
+    if (inputName.value.trim() === "" || inputText.value.trim() === "") {
+        //Блокировка и серый
+        buttonElement.disabled = true;
+        buttonElement.classList.add("active-input");
+    } else {
+        //Разблокировка и не серый
+        buttonElement.disabled = false;
+        buttonElement.classList.remove("active-input");
+    }
 };
 inputName.addEventListener("input", checkInputForm);
 inputText.addEventListener("input", checkInputForm);
 checkInputForm();
 
+//Удаление последнего комментария
+deleteButton.addEventListener('click', () => {
+    users.shift();
+    renderCommentList();
+    checkInputForm();
+});
+
+//Неактивность кнопки удаления при 0 длинне массива объектов
+function checkDeleteButton() {
+    if (users.length === 0) {
+        //Блокировка и серый
+        deleteButton.disabled = true;
+        deleteButton.classList.add("active-input");
+    } else {
+        //Разблокировка и не серый
+        deleteButton.disabled = false;
+        deleteButton.classList.remove("active-input");
+    }
+};
+
 //Лайки
 const addLikeClickButton = () => {
-  const clickLikes = document.querySelectorAll('.like-button');
+    const clickLikes = document.querySelectorAll('.like-button');
 
-  for (const clickLike of clickLikes) {
-    clickLike.addEventListener("click", () => {
-      const index = clickLike.dataset.index;
-      if (users[index].likeStatus === false) {
-        users[index].likes++;
-        users[index].likeStatus = true;
-      } else if (users[index].likeStatus === true) {
-        users[index].likes--;
-        users[index].likeStatus = false;
-      }
-      renderCommentList();
-    });
-  };
+    for (const clickLike of clickLikes) {
+        clickLike.addEventListener("click", () => {
+            const index = clickLike.dataset.index;
+            if (users[index].likeStatus === false) {
+                users[index].likes++;
+                users[index].likeStatus = true;
+            } else if (users[index].likeStatus === true) {
+                users[index].likes--;
+                users[index].likeStatus = false;
+            }
+            renderCommentList();
+        });
+    };
 };
 
 //HTML разметка
 renderCommentList = () => {
-  const userHtml = users.map((user, index) => {
-    return `<li class="comment">
+    const userHtml = users.map((user, index) => {
+        return `<li class="comment">
         <div class="comment-header">
           <div>${user.name}</div>
           <div>${user.time}</div>
@@ -90,61 +111,63 @@ renderCommentList = () => {
           </div>
         </div>
       </li>`
-  }).join('');
-  cardElement.innerHTML = userHtml;
-  addLikeClickButton();
-  checkInputForm();
+    }).join('');
+    cardElement.innerHTML = userHtml;
+    addLikeClickButton();
+    checkInputForm();
+    checkDeleteButton();
 };
 renderCommentList();
 
 //Enter
 document.addEventListener("keyup", (event) => {
-  if (event.code === 'Enter') {
-    document.getElementById("add-buttonId").click();
-    return;
-  }
+    if (event.code === 'Enter') {
+        document.getElementById("add-buttonId").click();
+        return;
+    }
 });
 
 //Ввод
 buttonElement.addEventListener("click", () => {
-  const date = new Date();
-  inputText.classList.remove("error");
-  inputName.classList.remove("error");
+    const date = new Date();
+    inputText.classList.remove("error");
+    inputName.classList.remove("error");
 
-  if ((inputText.value.length === 0) || (inputName.value.length === 0)) {
-    if ((inputText.value.length === 0) && (inputName.value.length === 0)) {
-      inputName.classList.add("error");
-      inputText.classList.add("error");
-      return;
-    }
-    else if (inputName.value.length === 0) {
-      inputName.classList.add("error");
-      return;
-    }
-    else if (inputText.value.length === 0) {
-      inputText.classList.add("error");
-      return;
-    }
-  };
+    if ((inputText.value.length === 0) || (inputName.value.length === 0)) {
+        if ((inputText.value.length === 0) && (inputName.value.length === 0)) {
+            inputName.classList.add("error");
+            inputText.classList.add("error");
+            return;
+        }
+        else if (inputName.value.length === 0) {
+            inputName.classList.add("error");
+            return;
+        }
+        else if (inputText.value.length === 0) {
+            inputText.classList.add("error");
+            return;
+        }
+    };
 
-  users.push({
-    name: inputName.value,
-    time: date.toLocaleString("ru", year) + " " + date.toLocaleString('ru', time),
-    comment: inputText.value,
-    likes: 0,
-    likeStatus: false,
-  });
+    users.push({
+        name: inputName.value,
+        time: date.toLocaleString("ru", year) + " " + date.toLocaleString('ru', time),
+        comment: inputText.value,
+        likes: 0,
+        likeStatus: false,
+    });
 
-  renderCommentList();
-  addLikeClickButton();
+    renderCommentList();
+    addLikeClickButton();
 
-  inputName.value = "";
-  inputText.value = "";
+    inputName.value = "";
+    inputText.value = "";
 
-  checkInputForm();
+    checkInputForm();
 });
 
 renderCommentList();
 checkInputForm();
 
+console.log(users.length);
 console.log("It works!");

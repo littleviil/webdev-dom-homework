@@ -140,3 +140,7 @@ body {
   .active-input{
     background-color: rgb(112, 112, 112);
   }
+
+  .active-delete{
+    background-color: rgb(112, 112, 112);
+  }

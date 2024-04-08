@@ -52,7 +52,8 @@ body {
 
   .comment-footer {
     display: flex;
-    justify-content: flex-end;
+    flex-direction: column;
+    align-items: flex-end;
   }
 
   .comment-body {
@@ -67,6 +68,7 @@ body {
   .likes {
     display: flex;
     align-items: center;
+    justify-content: flex-end;
   }
 
   .like-button {
@@ -93,6 +95,12 @@ body {
 
   .add-form {
     padding: 20px;
+    margin-top: 48px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .edit-add-form {
     margin-top: 48px;
     display: flex;
     flex-direction: column;

@@ -54,7 +54,7 @@ checkInputForm();
 
 //Удаление последнего комментария
 deleteButton.addEventListener('click', () => {
-    users.shift();
+    users.pop();
     renderCommentList();
     checkInputForm();
 });
@@ -70,6 +70,50 @@ function checkDeleteButton() {
         deleteButton.disabled = false;
         deleteButton.classList.remove("active-input");
     }
+};
+
+//Редактирование
+const editComments = () => {
+    const editButtons = document.querySelectorAll('.edit-button');
+    const editBlock = document.getElementById('comment-block');
+
+    for (const editButton of editButtons) {
+        editButton.addEventListener("click", (event) => {
+            event.stopPropagation();
+            index = editButton.dataset.index;
+            const userHtml = users.filter(user => { user[index] }) + `
+                <div class="comment-header">
+                    <input type="text" class="add-form-name" id="nameTextId" value="${users[index].name}"></input>
+                    <div>${users[index].time}</div>
+                </div>
+                <textarea type="textarea" class="add-form-text" id="commentTextId" rows="4">${users[index].comment}</textarea>
+                <div class="add-form-row">
+                    <button class="add-form-button" id="save-buttonId">Сохранить</button>
+                    <button id="delete-button" class="add-form-button">Удалить</button>
+                </div>`;
+            editBlock.classList.add("edit-add-form");
+            // userHtml.join('');
+            console.log(users[index].comment);
+            editBlock.innerHTML = userHtml;
+            document.getElementById('save-buttonId').addEventListener("click", () => {
+                users.push({
+                    name: inputName.value,
+                    time: users[index].time,
+                    comment: inputText.value,
+                    likes: users[index].likes,
+                    likeStatus: users[index].likeStatus,
+                });
+                users[index] = users.pop();
+                console.log(users[index]);
+                checkInputForm();
+                renderCommentList();
+            });
+            document.getElementById('delete-button').addEventListener("click", () => {
+                checkInputForm();
+                renderCommentList();
+            });
+        });
+    };
 };
 
 //Лайки
@@ -92,10 +136,10 @@ const addLikeClickButton = () => {
 };
 
 //HTML разметка
-renderCommentList = () => {
+const renderCommentList = () => {
     const userHtml = users.map((user, index) => {
-        return `<li class="comment">
-        <div class="comment-header">
+        return `<li class="comment" id="comment-block">
+        <div class="comment-header" data-index="${index}">
           <div>${user.name}</div>
           <div>${user.time}</div>
         </div>
@@ -109,10 +153,12 @@ renderCommentList = () => {
             <span class="likes-counter">${user.likes}</span>
             <button data-index="${index}" class="like-button ${user.likeStatus === true ? '-active-like' : ''}"></button>
           </div>
+          <button class="add-form-button edit-button" data-index="${index}">Редактировать</button>
         </div>
       </li>`
     }).join('');
     cardElement.innerHTML = userHtml;
+
     addLikeClickButton();
     checkInputForm();
     checkDeleteButton();
@@ -168,6 +214,6 @@ buttonElement.addEventListener("click", () => {
 
 renderCommentList();
 checkInputForm();
+editComments();
 
-console.log(users.length);
 console.log("It works!");

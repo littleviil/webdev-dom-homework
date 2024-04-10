@@ -75,37 +75,38 @@ function checkDeleteButton() {
 //Редактирование
 const editComments = () => {
     const editButtons = document.querySelectorAll('.edit-button');
-    const editBlock = document.getElementById('comment-block');
+    var li = document.getElementById("comments").getElementsByTagName("li");
 
     for (const editButton of editButtons) {
         editButton.addEventListener("click", (event) => {
             event.stopPropagation();
             index = editButton.dataset.index;
-            const userHtml = users.filter(user => { user[index] }) + `
+            userHTML = `
                 <div class="comment-header">
-                    <input type="text" class="add-form-name" id="nameTextId" value="${users[index].name}"></input>
+                    <input type="text" class="add-form-name" id="nameTextId" value="${inputName.value = users[index].name}"></input>
                     <div>${users[index].time}</div>
                 </div>
-                <textarea type="textarea" class="add-form-text" id="commentTextId" rows="4">${users[index].comment}</textarea>
+                <textarea type="textarea" class="add-form-text" id="commentTextId" rows="4">${inputText.value = users[index].comment}</textarea>
                 <div class="add-form-row">
                     <button class="add-form-button" id="save-buttonId">Сохранить</button>
                     <button id="delete-button" class="add-form-button">Удалить</button>
                 </div>`;
-            editBlock.classList.add("edit-add-form");
-            // userHtml.join('');
-            console.log(users[index].comment);
-            editBlock.innerHTML = userHtml;
+            // li[index].insertAdjacentHTML("afterend", userHTML);
+            li[index].innerHTML = userHTML;
+            li[index].classList.add("edit-add-form");
             document.getElementById('save-buttonId').addEventListener("click", () => {
-                users.push({
-                    name: inputName.value,
-                    time: users[index].time,
-                    comment: inputText.value,
-                    likes: users[index].likes,
-                    likeStatus: users[index].likeStatus,
+                users.find((user) => {
+                    user[index] = users[index];
+                    user[index].name = inputName.value;
+                    user[index].time = users[index].time;
+                    user[index].comment = inputText.value;
+                    user[index].likes = users[index].likes;
+                    user[index].likeStatus = users[index].likeStatus;
                 });
-                users[index] = users.pop();
                 console.log(users[index]);
-                checkInputForm();
+                // checkInputForm();
+                inputName.value = "";
+                inputText.value = "";
                 renderCommentList();
             });
             document.getElementById('delete-button').addEventListener("click", () => {
@@ -137,7 +138,7 @@ const addLikeClickButton = () => {
 
 //HTML разметка
 const renderCommentList = () => {
-    const userHtml = users.map((user, index) => {
+    const userHtml = users.map((user, index, indexEdit) => {
         return `<li class="comment" id="comment-block">
         <div class="comment-header" data-index="${index}">
           <div>${user.name}</div>
@@ -162,6 +163,7 @@ const renderCommentList = () => {
     addLikeClickButton();
     checkInputForm();
     checkDeleteButton();
+    editComments();
 };
 renderCommentList();
 

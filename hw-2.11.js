@@ -7,6 +7,7 @@ const cardElement = document.getElementById("comments");
 const buttonElement = document.getElementById("add-buttonId");
 const inputName = document.getElementById("nameTextId");
 const inputText = document.getElementById("commentTextId");
+
 const deleteButton = document.getElementById("delete-button");
 
 let time = {
@@ -83,30 +84,23 @@ const editComments = () => {
             index = editButton.dataset.index;
             userHTML = `
                 <div class="comment-header">
-                    <input type="text" class="add-form-name" id="nameTextId" value="${inputName.value = users[index].name}"></input>
+                    <input type="text" class="add-form-name" id="newNameTextId" value="${users[index].name}"></input>
                     <div>${users[index].time}</div>
                 </div>
-                <textarea type="textarea" class="add-form-text" id="commentTextId" rows="4">${inputText.value = users[index].comment}</textarea>
+                <textarea type="textarea" class="add-form-text" id="newCommentTextId" rows="4">${users[index].comment}</textarea>
                 <div class="add-form-row">
                     <button class="add-form-button" id="save-buttonId">Сохранить</button>
                     <button id="delete-button" class="add-form-button">Удалить</button>
                 </div>`;
-            // li[index].insertAdjacentHTML("afterend", userHTML);
             li[index].innerHTML = userHTML;
             li[index].classList.add("edit-add-form");
+            const editName = document.getElementById("newNameTextId");
+            const editText = document.getElementById("newCommentTextId");
             document.getElementById('save-buttonId').addEventListener("click", () => {
-                users.find((user) => {
-                    user[index] = users[index];
-                    user[index].name = inputName.value;
-                    user[index].time = users[index].time;
-                    user[index].comment = inputText.value;
-                    user[index].likes = users[index].likes;
-                    user[index].likeStatus = users[index].likeStatus;
-                });
-                console.log(users[index]);
-                // checkInputForm();
-                inputName.value = "";
-                inputText.value = "";
+                users[index].name = editName.value;
+                users[index].comment = editText.value;
+                editName.value = "";
+                editText.value = "";
                 renderCommentList();
             });
             document.getElementById('delete-button').addEventListener("click", () => {

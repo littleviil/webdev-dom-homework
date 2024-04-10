@@ -7,7 +7,7 @@ const cardElement = document.getElementById("comments");
 const buttonElement = document.getElementById("add-buttonId");
 const inputName = document.getElementById("nameTextId");
 const inputText = document.getElementById("commentTextId");
-
+var li = document.getElementById("comments").getElementsByTagName("li");
 const deleteButton = document.getElementById("delete-button");
 
 let time = {
@@ -73,6 +73,26 @@ function checkDeleteButton() {
     }
 };
 
+//Лайки
+const addLikeClickButton = () => {
+    const clickLikes = document.querySelectorAll('.like-button');
+
+    for (const clickLike of clickLikes) {
+        clickLike.addEventListener("click", (event) => {
+            event.stopPropagation();
+            const index = clickLike.dataset.index;
+            if (users[index].likeStatus === false) {
+                users[index].likes++;
+                users[index].likeStatus = true;
+            } else if (users[index].likeStatus === true) {
+                users[index].likes--;
+                users[index].likeStatus = false;
+            }
+            renderCommentList();
+        });
+    };
+};
+
 //Редактирование
 const editComments = () => {
     const editButtons = document.querySelectorAll('.edit-button');
@@ -97,8 +117,8 @@ const editComments = () => {
             const editName = document.getElementById("newNameTextId");
             const editText = document.getElementById("newCommentTextId");
             document.getElementById('save-buttonId').addEventListener("click", () => {
-                users[index].name = editName.value;
-                users[index].comment = editText.value;
+                users[index].name = editName.value.replaceAll("<", "&lt").replaceAll(">", "&gt");
+                users[index].comment = editText.value.replaceAll("<", "&lt").replaceAll(">", "&gt");
                 editName.value = "";
                 editText.value = "";
                 renderCommentList();
@@ -109,31 +129,22 @@ const editComments = () => {
             });
         });
     };
-};
 
-//Лайки
-const addLikeClickButton = () => {
-    const clickLikes = document.querySelectorAll('.like-button');
+    for (const liClick of li) {
+        liClick.addEventListener("click", (event) => {
+            event.stopPropagation();
+            index = liClick.dataset.index;
 
-    for (const clickLike of clickLikes) {
-        clickLike.addEventListener("click", () => {
-            const index = clickLike.dataset.index;
-            if (users[index].likeStatus === false) {
-                users[index].likes++;
-                users[index].likeStatus = true;
-            } else if (users[index].likeStatus === true) {
-                users[index].likes--;
-                users[index].likeStatus = false;
-            }
-            renderCommentList();
+            inputText.value = "> " + users[index].comment + `\n Автор: ` + users[index].name + `\n Ответ: `;
+            checkInputForm();
         });
     };
 };
 
 //HTML разметка
 const renderCommentList = () => {
-    const userHtml = users.map((user, index, indexEdit) => {
-        return `<li class="comment" id="comment-block">
+    const userHtml = users.map((user, index) => {
+        return `<li class="comment" id="comment-block" data-index="${index}">
         <div class="comment-header" data-index="${index}">
           <div>${user.name}</div>
           <div>${user.time}</div>
@@ -192,9 +203,9 @@ buttonElement.addEventListener("click", () => {
     };
 
     users.push({
-        name: inputName.value,
+        name: inputName.value.replaceAll("<", "&lt").replaceAll(">", "&gt"),
         time: date.toLocaleString("ru", year) + " " + date.toLocaleString('ru', time),
-        comment: inputText.value,
+        comment: inputText.value.replaceAll("<", "&lt").replaceAll(">", "&gt"),
         likes: 0,
         likeStatus: false,
     });

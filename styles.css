@@ -152,3 +152,14 @@ body {
   .active-delete{
     background-color: rgb(112, 112, 112);
   }
+  
+  .quote{
+    border-radius: 20px;
+    padding: 10px 20px 10px 20px;
+    margin-bottom: 20px;
+    box-sizing: border-box;
+    color:#2f294a;
+    font-family: Helvetica;
+    font-size: 20px;
+    background-color: rgb(231 226 255);
+  }

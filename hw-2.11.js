@@ -135,7 +135,7 @@ const editComments = () => {
             event.stopPropagation();
             index = liClick.dataset.index;
 
-            inputText.value = "> " + users[index].comment + `\n Автор: ` + users[index].name + `\n Ответ: `;
+            inputText.value = "✦♡ " + users[index].comment + `\n Автор: ` + users[index].name + `♡✦\n`;
             checkInputForm();
         });
     };
@@ -205,7 +205,7 @@ buttonElement.addEventListener("click", () => {
     users.push({
         name: inputName.value.replaceAll("<", "&lt").replaceAll(">", "&gt"),
         time: date.toLocaleString("ru", year) + " " + date.toLocaleString('ru', time),
-        comment: inputText.value.replaceAll("<", "&lt").replaceAll(">", "&gt"),
+        comment: inputText.value.replaceAll("<", "&lt").replaceAll(">", "&gt").replaceAll("✦♡", "<div class='quote'>").replaceAll("♡✦", "</div>"),
         likes: 0,
         likeStatus: false,
     });

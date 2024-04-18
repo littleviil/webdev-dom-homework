@@ -10,32 +10,29 @@ const inputText = document.getElementById("commentTextId");
 var li = document.getElementById("comments").getElementsByTagName("li");
 const deleteButton = document.getElementById("delete-button");
 
-function dataAcquisitionFunction() {
-    // Получаю данные из API 
-    const fetchPromise = fetch("https://wedev-api.sky.pro/api/v1/elena-saveleva/comments", {
-        method: "GET"
-    });
-    fetchPromise.then((response) => {
-        const jsonPromise = response.json();
-        jsonPromise.then((responseData) => {
-            console.log(responseData);
-            users = responseData.comments.map((user) => {
-                //Добавил константы даты и времени
-                const currentDate = new Date(user.date).toLocaleDateString('ru-Ru');
-                const currentTime = new Date(user.date).toLocaleTimeString('ru-RU');
-                return {
-                    name: user.author.name,
-                    time: `${currentDate} ${currentTime}`,
-                    comment: user.text,
-                    likes: user.likes,
-                    likeStatus: user.isLiked,
-                };
-            });
-            renderCommentList();
+// Получаю данные из API 
+const fetchPromise = fetch("https://wedev-api.sky.pro/api/v1/elena-saveleva/comments", {
+    method: "GET"
+});
+fetchPromise.then((response) => {
+    const jsonPromise = response.json();
+    jsonPromise.then((responseData) => {
+        console.log(responseData);
+        users = responseData.comments.map((user) => {
+            //Добавил константы даты и времени
+            const currentDate = new Date(user.date).toLocaleDateString('ru-Ru');
+            const currentTime = new Date(user.date).toLocaleTimeString('ru-RU');
+            return {
+                name: user.author.name,
+                time: `${currentDate} ${currentTime}`,
+                comment: user.text,
+                likes: user.likes,
+                likeStatus: user.isLiked,
+            };
         });
+        renderCommentList();
     });
-}
-dataAcquisitionFunction();
+});
 
 let time = {
     hour: 'numeric',
@@ -224,10 +221,17 @@ buttonElement.addEventListener("click", (event) => {
             comment: inputText.value.replaceAll("<", "&lt").replaceAll(">", "&gt").replaceAll("✦♡", "<div class='quote'>").replaceAll("♡✦", "</div>"),
         }),
     }).then((response) => {
-        dataAcquisitionFunction();
-    });
-
-    renderCommentList();
+        return response.json();
+    }).then((responseData) => {
+        return fetch("https://wedev-api.sky.pro/api/v1/elena-saveleva/comments", {
+            method: "GET",
+        });
+    }).then((response) => {
+        return response.json();
+    }).then((responseData) => {
+        users = responseData.comments;
+        renderCommentList();
+    })
 
     inputName.value = "";
     inputText.value = "";

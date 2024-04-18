@@ -52,7 +52,8 @@ body {
 
   .comment-footer {
     display: flex;
-    justify-content: flex-end;
+    flex-direction: column;
+    align-items: flex-end;
   }
 
   .comment-body {
@@ -67,6 +68,7 @@ body {
   .likes {
     display: flex;
     align-items: center;
+    justify-content: flex-end;
   }
 
   .like-button {
@@ -93,6 +95,12 @@ body {
 
   .add-form {
     padding: 20px;
+    margin-top: 48px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .edit-add-form {
     margin-top: 48px;
     display: flex;
     flex-direction: column;
@@ -139,4 +147,19 @@ body {
 
   .active-input{
     background-color: rgb(112, 112, 112);
+  }
+
+  .active-delete{
+    background-color: rgb(112, 112, 112);
+  }
+  
+  .quote{
+    border-radius: 20px;
+    padding: 10px 20px 10px 20px;
+    margin-bottom: 20px;
+    box-sizing: border-box;
+    color:#2f294a;
+    font-family: Helvetica;
+    font-size: 20px;
+    background-color: rgb(231 226 255);
   }

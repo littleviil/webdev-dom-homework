@@ -211,7 +211,6 @@ buttonElement.addEventListener("click", () => {
     });
 
     renderCommentList();
-    addLikeClickButton();
 
     inputName.value = "";
     inputText.value = "";

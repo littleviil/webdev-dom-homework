@@ -10,6 +10,33 @@ const inputText = document.getElementById("commentTextId");
 var li = document.getElementById("comments").getElementsByTagName("li");
 const deleteButton = document.getElementById("delete-button");
 
+function dataAcquisitionFunction() {
+    // Получаю данные из API 
+    const fetchPromise = fetch("https://wedev-api.sky.pro/api/v1/elena-saveleva/comments", {
+        method: "GET"
+    });
+    fetchPromise.then((response) => {
+        const jsonPromise = response.json();
+        jsonPromise.then((responseData) => {
+            console.log(responseData);
+            users = responseData.comments.map((user) => {
+                //Добавил константы даты и времени
+                const currentDate = new Date(user.date).toLocaleDateString('ru-Ru');
+                const currentTime = new Date(user.date).toLocaleTimeString('ru-RU');
+                return {
+                    name: user.author.name,
+                    time: `${currentDate} ${currentTime}`,
+                    comment: user.text,
+                    likes: user.likes,
+                    likeStatus: user.isLiked,
+                };
+            });
+            renderCommentList();
+        });
+    });
+}
+dataAcquisitionFunction();
+
 let time = {
     hour: 'numeric',
     minute: 'numeric',
@@ -20,22 +47,7 @@ let year = {
     day: 'numeric',
 };
 
-const users = [
-    {
-        name: "Глеб Фокин",
-        time: "12.02.22 12:18",
-        comment: "Это будет первый комментарий на этой странице",
-        likes: 3,
-        likeStatus: false,
-    },
-    {
-        name: "Варвара Н.",
-        time: "13.02.22 19:22",
-        comment: "Мне нравится как оформлена эта страница! ❤",
-        likes: 75,
-        likeStatus: true,
-    },
-];
+let users = [];
 
 //Блокировка кнопки "Написать"
 function checkInputForm() {
@@ -54,7 +66,8 @@ inputText.addEventListener("input", checkInputForm);
 checkInputForm();
 
 //Удаление последнего комментария
-deleteButton.addEventListener('click', () => {
+deleteButton.addEventListener('click', (event) => {
+    event.stopPropagation();
     users.pop();
     renderCommentList();
     checkInputForm();
@@ -116,14 +129,16 @@ const editComments = () => {
             li[index].classList.add("edit-add-form");
             const editName = document.getElementById("newNameTextId");
             const editText = document.getElementById("newCommentTextId");
-            document.getElementById('save-buttonId').addEventListener("click", () => {
+            document.getElementById('save-buttonId').addEventListener("click", (event) => {
+                event.stopPropagation();
                 users[index].name = editName.value.replaceAll("<", "&lt").replaceAll(">", "&gt");
                 users[index].comment = editText.value.replaceAll("<", "&lt").replaceAll(">", "&gt");
                 editName.value = "";
                 editText.value = "";
                 renderCommentList();
             });
-            document.getElementById('delete-button').addEventListener("click", () => {
+            document.getElementById('delete-button').addEventListener("click", (event) => {
+                event.stopPropagation();
                 checkInputForm();
                 renderCommentList();
             });
@@ -181,8 +196,8 @@ document.addEventListener("keyup", (event) => {
 });
 
 //Ввод
-buttonElement.addEventListener("click", () => {
-    const date = new Date();
+buttonElement.addEventListener("click", (event) => {
+    event.stopPropagation();
     inputText.classList.remove("error");
     inputName.classList.remove("error");
 
@@ -202,12 +217,14 @@ buttonElement.addEventListener("click", () => {
         }
     };
 
-    users.push({
-        name: inputName.value.replaceAll("<", "&lt").replaceAll(">", "&gt"),
-        time: date.toLocaleString("ru", year) + " " + date.toLocaleString('ru', time),
-        comment: inputText.value.replaceAll("<", "&lt").replaceAll(">", "&gt").replaceAll("✦♡", "<div class='quote'>").replaceAll("♡✦", "</div>"),
-        likes: 0,
-        likeStatus: false,
+    fetch("https://wedev-api.sky.pro/api/v1/elena-saveleva/comments", {
+        method: "POST",
+        body: JSON.stringify({
+            name: inputName.value.replaceAll("<", "&lt").replaceAll(">", "&gt"),
+            comment: inputText.value.replaceAll("<", "&lt").replaceAll(">", "&gt").replaceAll("✦♡", "<div class='quote'>").replaceAll("♡✦", "</div>"),
+        }),
+    }).then((response) => {
+        dataAcquisitionFunction();
     });
 
     renderCommentList();

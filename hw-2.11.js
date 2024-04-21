@@ -18,16 +18,16 @@ fetchPromise.then((response) => {
     const jsonPromise = response.json();
     jsonPromise.then((responseData) => {
         console.log(responseData);
-        users = responseData.comments.map((user) => {
+        comments = responseData.comments.map((user) => {
             //Добавил константы даты и времени
             const currentDate = new Date(user.date).toLocaleDateString('ru-Ru');
             const currentTime = new Date(user.date).toLocaleTimeString('ru-RU');
             return {
-                name: user.author.name,
-                time: `${currentDate} ${currentTime}`,
-                comment: user.text,
+                author: user.author.name,
+                date: `${currentDate} ${currentTime}`,
+                text: user.text,
                 likes: user.likes,
-                likeStatus: user.isLiked,
+                isLiked: user.isLiked,
             };
         });
         renderCommentList();
@@ -44,7 +44,7 @@ let year = {
     day: 'numeric',
 };
 
-let users = [];
+let comments = [];
 
 //Блокировка кнопки "Написать"
 function checkInputForm() {
@@ -65,14 +65,16 @@ checkInputForm();
 //Удаление последнего комментария
 deleteButton.addEventListener('click', (event) => {
     event.stopPropagation();
-    users.pop();
+    comments.pop();
+    // fetch("https://wedev-api.sky.pro/api/v1/elena-saveleva/comments", {
+    // method: "DELETE"
     renderCommentList();
     checkInputForm();
 });
 
 //Неактивность кнопки удаления при 0 длинне массива объектов
 function checkDeleteButton() {
-    if (users.length === 0) {
+    if (comments.length === 0) {
         //Блокировка и серый
         deleteButton.disabled = true;
         deleteButton.classList.add("active-input");
@@ -91,12 +93,12 @@ const addLikeClickButton = () => {
         clickLike.addEventListener("click", (event) => {
             event.stopPropagation();
             const index = clickLike.dataset.index;
-            if (users[index].likeStatus === false) {
-                users[index].likes++;
-                users[index].likeStatus = true;
-            } else if (users[index].likeStatus === true) {
-                users[index].likes--;
-                users[index].likeStatus = false;
+            if (comments[index].isLiked === false) {
+                comments[index].likes++;
+                comments[index].isLiked = true;
+            } else if (comments[index].isLiked === true) {
+                comments[index].likes--;
+                comments[index].isLiked = false;
             }
             renderCommentList();
         });
@@ -114,10 +116,10 @@ const editComments = () => {
             index = editButton.dataset.index;
             userHTML = `
                 <div class="comment-header">
-                    <input type="text" class="add-form-name" id="newNameTextId" value="${users[index].name}"></input>
-                    <div>${users[index].time}</div>
+                    <input type="text" class="add-form-name" id="newNameTextId" value="${comments[index].author}"></input>
+                    <div>${comments[index].date}</div>
                 </div>
-                <textarea type="textarea" class="add-form-text" id="newCommentTextId" rows="4">${users[index].comment}</textarea>
+                <textarea type="textarea" class="add-form-text" id="newCommentTextId" rows="4">${comments[index].text}</textarea>
                 <div class="add-form-row">
                     <button class="add-form-button" id="save-buttonId">Сохранить</button>
                     <button id="delete-button" class="add-form-button">Удалить</button>
@@ -128,8 +130,8 @@ const editComments = () => {
             const editText = document.getElementById("newCommentTextId");
             document.getElementById('save-buttonId').addEventListener("click", (event) => {
                 event.stopPropagation();
-                users[index].name = editName.value.replaceAll("<", "&lt").replaceAll(">", "&gt");
-                users[index].comment = editText.value.replaceAll("<", "&lt").replaceAll(">", "&gt");
+                comments[index].author = editName.value.replaceAll("<", "&lt").replaceAll(">", "&gt");
+                comments[index].text = editText.value.replaceAll("<", "&lt").replaceAll(">", "&gt");
                 editName.value = "";
                 editText.value = "";
                 renderCommentList();
@@ -147,7 +149,7 @@ const editComments = () => {
             event.stopPropagation();
             index = liClick.dataset.index;
 
-            inputText.value = "✦♡ " + users[index].comment + `\n Автор: ` + users[index].name + `♡✦\n`;
+            inputText.value = "✦♡ " + comments[index].text + `\n Автор: ` + comments[index].author + `♡✦\n`;
             checkInputForm();
         });
     };
@@ -155,21 +157,21 @@ const editComments = () => {
 
 //HTML разметка
 const renderCommentList = () => {
-    const userHtml = users.map((user, index) => {
+    const userHtml = comments.map((user, index) => {
         return `<li class="comment" id="comment-block" data-index="${index}">
         <div class="comment-header" data-index="${index}">
-          <div>${user.name}</div>
-          <div>${user.time}</div>
+          <div>${user.author}</div>
+          <div>${user.date}</div>
         </div>
         <div class="comment-body">
           <div class="comment-text">
-          ${user.comment}
+          ${user.text}
           </div>
         </div>
         <div class="comment-footer">
           <div class="likes">
             <span class="likes-counter">${user.likes}</span>
-            <button data-index="${index}" class="like-button ${user.likeStatus === true ? '-active-like' : ''}"></button>
+            <button data-index="${index}" class="like-button ${user.isLiked === true ? '-active-like' : ''}"></button>
           </div>
           <button class="add-form-button edit-button" data-index="${index}">Редактировать</button>
         </div>
@@ -218,7 +220,7 @@ buttonElement.addEventListener("click", (event) => {
         method: "POST",
         body: JSON.stringify({
             name: inputName.value.replaceAll("<", "&lt").replaceAll(">", "&gt"),
-            comment: inputText.value.replaceAll("<", "&lt").replaceAll(">", "&gt").replaceAll("✦♡", "<div class='quote'>").replaceAll("♡✦", "</div>"),
+            text: inputText.value.replaceAll("<", "&lt").replaceAll(">", "&gt").replaceAll("✦♡", "<div class='quote'>").replaceAll("♡✦", "</div>"),
         }),
     }).then((response) => {
         return response.json();
@@ -229,7 +231,7 @@ buttonElement.addEventListener("click", (event) => {
     }).then((response) => {
         return response.json();
     }).then((responseData) => {
-        users = responseData.comments;
+        comments = responseData.comments;
         renderCommentList();
     })
 

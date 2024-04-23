@@ -36,12 +36,6 @@ function getComments() {
     }).then(() => {
         document.getElementById('start-loading').classList.add('load');
         document.getElementById('nameTextId').classList.remove('load');
-    }).catch((error) => {
-        document.getElementById('loading').classList.add('load');
-        document.getElementById('nameTextId').classList.remove('load');
-        document.getElementById('add-buttonId').disabled = false;
-
-        alert('Проблемы с интернетом...');
     });
 };
 getComments();
@@ -228,7 +222,6 @@ buttonElement.addEventListener("click", (event) => {
         }
     };
 
-    const startTime = Date.now();
 
     document.getElementById('loading').classList.remove('load');
     document.getElementById('nameTextId').classList.add('load');
@@ -240,27 +233,12 @@ buttonElement.addEventListener("click", (event) => {
             text: inputText.value.replaceAll("<", "&lt").replaceAll(">", "&gt").replaceAll("✦♡", "<div class='quote'>").replaceAll("♡✦", "</div>"),
         }),
     }).then((response) => {
-        console.log('Прошло времени: ' + (Date.now() - startTime));
-        return response
-    }).then((response) => {
         return response.json();
-    }).then((response) => {
-        console.log('Прошло времени: ' + (Date.now() - startTime));
-        return response
     }).then(() => {
         return getComments();
-    }).then((response) => {
-        console.log('Прошло времени: ' + (Date.now() - startTime));
-        return response
     }).then(() => {
         document.getElementById('loading').classList.add('load');
         document.getElementById('nameTextId').classList.remove('load');
-    }).catch((error) => {
-        document.getElementById('loading').classList.add('load');
-        document.getElementById('nameTextId').classList.remove('load');
-        document.getElementById('add-buttonId').disabled = false;
-
-        alert('Проблемы с интернетом...');
     });
 
     inputName.value = "";

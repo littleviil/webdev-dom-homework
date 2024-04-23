@@ -10,32 +10,39 @@ const inputText = document.getElementById("commentTextId");
 var li = document.getElementById("comments").getElementsByTagName("li");
 const deleteButton = document.getElementById("delete-button");
 
+document.getElementById('start-loading').classList.remove('load');
+document.getElementById('nameTextId').classList.add('load');
+
 // Получаю данные из API 
 function getComments() {
-    return fetch(
-        'https://wedev-api.sky.pro/api/v1/elena-saveleva/comments',
-        {
-            method: "GET"
-        }
-    )
-        .then((response) => {
-            return response.json();
-        })
-        .then((responseData) => {
-            const appComments = responseData.comments.map((user) => {
-                const currentDate = new Date(user.date).toLocaleDateString('ru-Ru');
-                const currentTime = new Date(user.date).toLocaleTimeString('ru-RU');
-                return {
-                    author: user.author.name,
-                    date: `${currentDate} ${currentTime}`,
-                    text: user.text,
-                    likes: user.likes,
-                    isLiked: user.isLiked,
-                };
-            });
-            comments = appComments;
-            renderCommentList();
+    return fetch('https://wedev-api.sky.pro/api/v1/elena-saveleva/comments', {
+        method: "GET"
+    }).then((response) => {
+        return response.json();
+    }).then((responseData) => {
+        const appComments = responseData.comments.map((user) => {
+            const currentDate = new Date(user.date).toLocaleDateString('ru-Ru');
+            const currentTime = new Date(user.date).toLocaleTimeString('ru-RU');
+            return {
+                author: user.author.name,
+                date: `${currentDate} ${currentTime}`,
+                text: user.text,
+                likes: user.likes,
+                isLiked: user.isLiked,
+            };
         });
+        comments = appComments;
+        renderCommentList();
+    }).then(() => {
+        document.getElementById('start-loading').classList.add('load');
+        document.getElementById('nameTextId').classList.remove('load');
+    }).catch((error) => {
+        document.getElementById('loading').classList.add('load');
+        document.getElementById('nameTextId').classList.remove('load');
+        document.getElementById('add-buttonId').disabled = false;
+
+        alert('Проблемы с интернетом...');
+    });
 };
 getComments();
 
@@ -222,8 +229,9 @@ buttonElement.addEventListener("click", (event) => {
     };
 
     const startTime = Date.now();
+
     document.getElementById('loading').classList.remove('load');
-    document.getElementById('form').classList.add('load');
+    document.getElementById('nameTextId').classList.add('load');
 
     fetch("https://wedev-api.sky.pro/api/v1/elena-saveleva/comments", {
         method: "POST",
@@ -244,6 +252,15 @@ buttonElement.addEventListener("click", (event) => {
     }).then((response) => {
         console.log('Прошло времени: ' + (Date.now() - startTime));
         return response
+    }).then(() => {
+        document.getElementById('loading').classList.add('load');
+        document.getElementById('nameTextId').classList.remove('load');
+    }).catch((error) => {
+        document.getElementById('loading').classList.add('load');
+        document.getElementById('nameTextId').classList.remove('load');
+        document.getElementById('add-buttonId').disabled = false;
+
+        alert('Проблемы с интернетом...');
     });
 
     inputName.value = "";

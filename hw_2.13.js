@@ -221,16 +221,29 @@ buttonElement.addEventListener("click", (event) => {
         }
     };
 
+    const startTime = Date.now();
+    document.getElementById('loading').classList.remove('load');
+    document.getElementById('form').classList.add('load');
+
     fetch("https://wedev-api.sky.pro/api/v1/elena-saveleva/comments", {
         method: "POST",
         body: JSON.stringify({
             name: inputName.value.replaceAll("<", "&lt").replaceAll(">", "&gt"),
             text: inputText.value.replaceAll("<", "&lt").replaceAll(">", "&gt").replaceAll("✦♡", "<div class='quote'>").replaceAll("♡✦", "</div>"),
         }),
+    }).then((response) => {
+        console.log('Прошло времени: ' + (Date.now() - startTime));
+        return response
+    }).then((response) => {
+        return response.json();
+    }).then((response) => {
+        console.log('Прошло времени: ' + (Date.now() - startTime));
+        return response
     }).then(() => {
         return getComments();
-    }).then(() => {
-        checkInputForm();
+    }).then((response) => {
+        console.log('Прошло времени: ' + (Date.now() - startTime));
+        return response
     });
 
     inputName.value = "";

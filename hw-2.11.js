@@ -10,6 +10,35 @@ const inputText = document.getElementById("commentTextId");
 var li = document.getElementById("comments").getElementsByTagName("li");
 const deleteButton = document.getElementById("delete-button");
 
+// Получаю данные из API 
+function getComments() {
+    return fetch(
+        'https://wedev-api.sky.pro/api/v1/elena-saveleva/comments',
+        {
+            method: "GET"
+        }
+    )
+        .then((response) => {
+            return response.json();
+        })
+        .then((responseData) => {
+            const appComments = responseData.comments.map((user) => {
+                const currentDate = new Date(user.date).toLocaleDateString('ru-Ru');
+                const currentTime = new Date(user.date).toLocaleTimeString('ru-RU');
+                return {
+                    author: user.author.name,
+                    date: `${currentDate} ${currentTime}`,
+                    text: user.text,
+                    likes: user.likes,
+                    isLiked: user.isLiked,
+                };
+            });
+            comments = appComments;
+            renderCommentList();
+        });
+};
+getComments();
+
 let time = {
     hour: 'numeric',
     minute: 'numeric',
@@ -20,22 +49,7 @@ let year = {
     day: 'numeric',
 };
 
-const users = [
-    {
-        name: "Глеб Фокин",
-        time: "12.02.22 12:18",
-        comment: "Это будет первый комментарий на этой странице",
-        likes: 3,
-        likeStatus: false,
-    },
-    {
-        name: "Варвара Н.",
-        time: "13.02.22 19:22",
-        comment: "Мне нравится как оформлена эта страница! ❤",
-        likes: 75,
-        likeStatus: true,
-    },
-];
+let comments = [];
 
 //Блокировка кнопки "Написать"
 function checkInputForm() {
@@ -54,15 +68,18 @@ inputText.addEventListener("input", checkInputForm);
 checkInputForm();
 
 //Удаление последнего комментария
-deleteButton.addEventListener('click', () => {
-    users.pop();
+deleteButton.addEventListener('click', (event) => {
+    event.stopPropagation();
+    comments.pop();
+    // fetch("https://wedev-api.sky.pro/api/v1/elena-saveleva/comments", {
+    // method: "DELETE"
     renderCommentList();
     checkInputForm();
 });
 
 //Неактивность кнопки удаления при 0 длинне массива объектов
 function checkDeleteButton() {
-    if (users.length === 0) {
+    if (comments.length === 0) {
         //Блокировка и серый
         deleteButton.disabled = true;
         deleteButton.classList.add("active-input");
@@ -81,12 +98,12 @@ const addLikeClickButton = () => {
         clickLike.addEventListener("click", (event) => {
             event.stopPropagation();
             const index = clickLike.dataset.index;
-            if (users[index].likeStatus === false) {
-                users[index].likes++;
-                users[index].likeStatus = true;
-            } else if (users[index].likeStatus === true) {
-                users[index].likes--;
-                users[index].likeStatus = false;
+            if (comments[index].isLiked === false) {
+                comments[index].likes++;
+                comments[index].isLiked = true;
+            } else if (comments[index].isLiked === true) {
+                comments[index].likes--;
+                comments[index].isLiked = false;
             }
             renderCommentList();
         });
@@ -104,10 +121,10 @@ const editComments = () => {
             index = editButton.dataset.index;
             userHTML = `
                 <div class="comment-header">
-                    <input type="text" class="add-form-name" id="newNameTextId" value="${users[index].name}"></input>
-                    <div>${users[index].time}</div>
+                    <input type="text" class="add-form-name" id="newNameTextId" value="${comments[index].author}"></input>
+                    <div>${comments[index].date}</div>
                 </div>
-                <textarea type="textarea" class="add-form-text" id="newCommentTextId" rows="4">${users[index].comment}</textarea>
+                <textarea type="textarea" class="add-form-text" id="newCommentTextId" rows="4">${comments[index].text}</textarea>
                 <div class="add-form-row">
                     <button class="add-form-button" id="save-buttonId">Сохранить</button>
                     <button id="delete-button" class="add-form-button">Удалить</button>
@@ -116,14 +133,16 @@ const editComments = () => {
             li[index].classList.add("edit-add-form");
             const editName = document.getElementById("newNameTextId");
             const editText = document.getElementById("newCommentTextId");
-            document.getElementById('save-buttonId').addEventListener("click", () => {
-                users[index].name = editName.value.replaceAll("<", "&lt").replaceAll(">", "&gt");
-                users[index].comment = editText.value.replaceAll("<", "&lt").replaceAll(">", "&gt");
+            document.getElementById('save-buttonId').addEventListener("click", (event) => {
+                event.stopPropagation();
+                comments[index].author = editName.value.replaceAll("<", "&lt").replaceAll(">", "&gt");
+                comments[index].text = editText.value.replaceAll("<", "&lt").replaceAll(">", "&gt");
                 editName.value = "";
                 editText.value = "";
                 renderCommentList();
             });
-            document.getElementById('delete-button').addEventListener("click", () => {
+            document.getElementById('delete-button').addEventListener("click", (event) => {
+                event.stopPropagation();
                 checkInputForm();
                 renderCommentList();
             });
@@ -135,7 +154,7 @@ const editComments = () => {
             event.stopPropagation();
             index = liClick.dataset.index;
 
-            inputText.value = "✦♡ " + users[index].comment + `\n Автор: ` + users[index].name + `♡✦\n`;
+            inputText.value = "✦♡ " + comments[index].text + `\n Автор: ` + comments[index].author + `♡✦\n`;
             checkInputForm();
         });
     };
@@ -143,21 +162,21 @@ const editComments = () => {
 
 //HTML разметка
 const renderCommentList = () => {
-    const userHtml = users.map((user, index) => {
+    const userHtml = comments.map((user, index) => {
         return `<li class="comment" id="comment-block" data-index="${index}">
         <div class="comment-header" data-index="${index}">
-          <div>${user.name}</div>
-          <div>${user.time}</div>
+          <div>${user.author}</div>
+          <div>${user.date}</div>
         </div>
         <div class="comment-body">
           <div class="comment-text">
-          ${user.comment}
+          ${user.text}
           </div>
         </div>
         <div class="comment-footer">
           <div class="likes">
             <span class="likes-counter">${user.likes}</span>
-            <button data-index="${index}" class="like-button ${user.likeStatus === true ? '-active-like' : ''}"></button>
+            <button data-index="${index}" class="like-button ${user.isLiked === true ? '-active-like' : ''}"></button>
           </div>
           <button class="add-form-button edit-button" data-index="${index}">Редактировать</button>
         </div>
@@ -181,8 +200,8 @@ document.addEventListener("keyup", (event) => {
 });
 
 //Ввод
-buttonElement.addEventListener("click", () => {
-    const date = new Date();
+buttonElement.addEventListener("click", (event) => {
+    event.stopPropagation();
     inputText.classList.remove("error");
     inputName.classList.remove("error");
 
@@ -202,20 +221,22 @@ buttonElement.addEventListener("click", () => {
         }
     };
 
-    users.push({
-        name: inputName.value.replaceAll("<", "&lt").replaceAll(">", "&gt"),
-        time: date.toLocaleString("ru", year) + " " + date.toLocaleString('ru', time),
-        comment: inputText.value.replaceAll("<", "&lt").replaceAll(">", "&gt").replaceAll("✦♡", "<div class='quote'>").replaceAll("♡✦", "</div>"),
-        likes: 0,
-        likeStatus: false,
+    fetch("https://wedev-api.sky.pro/api/v1/elena-saveleva/comments", {
+        method: "POST",
+        body: JSON.stringify({
+            name: inputName.value.replaceAll("<", "&lt").replaceAll(">", "&gt"),
+            text: inputText.value.replaceAll("<", "&lt").replaceAll(">", "&gt").replaceAll("✦♡", "<div class='quote'>").replaceAll("♡✦", "</div>"),
+        }),
+    }).then(() => {
+        return getComments();
+    }).then(() => {
+        checkInputForm();
     });
-
-    renderCommentList();
-    addLikeClickButton();
 
     inputName.value = "";
     inputText.value = "";
 
+    renderCommentList();
     checkInputForm();
 });
 

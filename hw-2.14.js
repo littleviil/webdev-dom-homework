@@ -18,7 +18,11 @@ function getComments() {
     return fetch('https://wedev-api.sky.pro/api/v1/elena-saveleva/comments', {
         method: "GET"
     }).then((response) => {
-        return response.json();
+        if (response.status === 200) {
+            return response.json();
+        } else {
+            throw new Error("Сервер упал");
+        }
     }).then((responseData) => {
         const appComments = responseData.comments.map((user) => {
             const currentDate = new Date(user.date).toLocaleDateString('ru-Ru');
@@ -36,6 +40,8 @@ function getComments() {
     }).then(() => {
         document.getElementById('start-loading').classList.add('load');
         document.getElementById('form').classList.remove('load');
+    }).catch(() => {
+        alert('Что-то пошло не так с get()...');
     });
 };
 getComments();

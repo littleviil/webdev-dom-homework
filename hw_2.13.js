@@ -11,7 +11,7 @@ var li = document.getElementById("comments").getElementsByTagName("li");
 const deleteButton = document.getElementById("delete-button");
 
 document.getElementById('start-loading').classList.remove('load');
-document.getElementById('nameTextId').classList.add('load');
+document.getElementById('form').classList.add('load');
 
 // Получаю данные из API 
 function getComments() {
@@ -35,7 +35,7 @@ function getComments() {
         renderCommentList();
     }).then(() => {
         document.getElementById('start-loading').classList.add('load');
-        document.getElementById('nameTextId').classList.remove('load');
+        document.getElementById('form').classList.remove('load');
     });
 };
 getComments();
@@ -224,7 +224,7 @@ buttonElement.addEventListener("click", (event) => {
 
 
     document.getElementById('loading').classList.remove('load');
-    document.getElementById('nameTextId').classList.add('load');
+    document.getElementById('form').classList.add('load');
 
     fetch("https://wedev-api.sky.pro/api/v1/elena-saveleva/comments", {
         method: "POST",
@@ -238,7 +238,7 @@ buttonElement.addEventListener("click", (event) => {
         return getComments();
     }).then(() => {
         document.getElementById('loading').classList.add('load');
-        document.getElementById('nameTextId').classList.remove('load');
+        document.getElementById('form').classList.remove('load');
     });
 
     inputName.value = "";

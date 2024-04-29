@@ -43,7 +43,7 @@ function getComments() {
         document.getElementById('start-loading').classList.add('load');
         document.getElementById('form').classList.remove('load');
     }).catch(() => {
-        alert('Что-то пошло не так с getComments()...');
+        alert('Отсутствует соединение с интернетом или проблемы на сервере.');
     });
 };
 getComments();
@@ -265,6 +265,9 @@ buttonElement.addEventListener("click", (event) => {
         inputText.value = "";
         return response;
     }).catch((error) => {
+        if (error.message === "Failed to fetch") {
+            alert("Кажется что-то пошло не так, попробуй позже..");
+        };
         console.warn(error);
         return error;
     }).finally(() => {

@@ -13,9 +13,11 @@ const deleteButton = document.getElementById("delete-button");
 document.getElementById('start-loading').classList.remove('load');
 document.getElementById('form').classList.add('load');
 
+const myURL = 'https://wedev-api.sky.pro/api/v1/elena-saveleva/comments';
+
 // Получаю данные из API 
 function getComments() {
-    return fetch('https://wedev-api.sky.pro/api/v1/elena-saveleva/comments', {
+    return fetch(myURL, {
         method: "GET"
     }).then((response) => {
         if (response.status === 200) {
@@ -41,7 +43,7 @@ function getComments() {
         document.getElementById('start-loading').classList.add('load');
         document.getElementById('form').classList.remove('load');
     }).catch(() => {
-        alert('Что-то пошло не так с get()...');
+        alert('Что-то пошло не так с getComments()...');
     });
 };
 getComments();
@@ -78,8 +80,6 @@ checkInputForm();
 deleteButton.addEventListener('click', (event) => {
     event.stopPropagation();
     comments.pop();
-    // fetch("https://wedev-api.sky.pro/api/v1/elena-saveleva/comments", {
-    // method: "DELETE"
     renderCommentList();
     checkInputForm();
 });
@@ -237,23 +237,40 @@ buttonElement.addEventListener("click", (event) => {
     document.getElementById('loading').classList.remove('load');
     document.getElementById('form').classList.add('load');
 
-    fetch("https://wedev-api.sky.pro/api/v1/elena-saveleva/comments", {
+    fetch(myURL, {
         method: "POST",
         body: JSON.stringify({
             name: searchSwap(inputName.value),
             text: searchSwap(inputText.value),
+            // forceError: true,
         }),
+    }).then((response) => {
+        console.log(response);
+        if (response.status === 201) {
+            return response.json();
+        } else if (response.status === 400) {
+            alert(`Server error ${response.status}\nВведите не менее 3-х символов!`);
+            throw new Error("Сервер упал 400");
+        } else if (response.status === 500) {
+            alert(`Server error ${response.status}`);
+            post();
+            throw new Error("Сервер упал 500");
+        }
     }).then((response) => {
         return response.json();
     }).then(() => {
         return getComments();
-    }).then(() => {
+    }).then((response) => {
+        inputName.value = "";
+        inputText.value = "";
+        return response;
+    }).catch((error) => {
+        console.warn(error);
+        return error;
+    }).finally(() => {
         document.getElementById('loading').classList.add('load');
         document.getElementById('form').classList.remove('load');
     });
-
-    inputName.value = "";
-    inputText.value = "";
 
     renderCommentList();
     checkInputForm();

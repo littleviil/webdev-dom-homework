@@ -256,8 +256,6 @@ buttonElement.addEventListener("click", (event) => {
             post();
             throw new Error("Сервер упал 500");
         }
-    }).then((response) => {
-        return response.json();
     }).then(() => {
         return getComments();
     }).then((response) => {

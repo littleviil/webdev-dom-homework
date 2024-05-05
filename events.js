@@ -1,5 +1,4 @@
 import { render } from './render.js';
-import { comInputElement } from './dom.js';
 import { postAPI } from './api.js';
 
 //Лайки
@@ -96,21 +95,25 @@ export const input = () => {
     });
 }
 
-//Удаление последнего комментария
-deleteButton.addEventListener('click', (event) => {
-    event.stopPropagation();
-    comments.pop();
-    renderCommentList();
-    checkInputForm();
-});
+//Лайки
+export const LikeClickButton = () => {
+    const clickLikes = document.querySelectorAll('.like-button');
 
-//Удаление последнего комментария
-deleteButton.addEventListener('click', (event) => {
-    event.stopPropagation();
-    comments.pop();
-    renderCommentList();
-    checkInputForm();
-});
+    for (const clickLike of clickLikes) {
+        clickLike.addEventListener("click", (event) => {
+            event.stopPropagation();
+            const index = clickLike.dataset.index;
+            if (comments[index].isLiked === false) {
+                comments[index].likes++;
+                comments[index].isLiked = true;
+            } else if (comments[index].isLiked === true) {
+                comments[index].likes--;
+                comments[index].isLiked = false;
+            }
+            render();
+        });
+    };
+};
 
 //Замена спец.символов
 export const searchSwap = (comment) => {

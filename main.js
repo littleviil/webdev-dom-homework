@@ -1,5 +1,6 @@
 import { getAPI } from './api.js';
 import { initClickHandler } from './render.js';
+import { checkInputForm } from './check.js';
 
 document.getElementById('start-loading').classList.remove('load');
 document.getElementById('form').classList.add('load');
@@ -11,6 +12,18 @@ document.addEventListener("keyup", (event) => {
         return;
     }
 });
+
+//Удаление последнего комментария
+deleteButton.addEventListener('click', (event) => {
+    event.stopPropagation();
+    comments.pop();
+    renderCommentList();
+    checkInputForm();
+});
+
+inputName.addEventListener("input", checkInputForm);
+inputText.addEventListener("input", checkInputForm);
+checkInputForm();
 
 getAPI();
 initClickHandler();

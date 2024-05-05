@@ -1,7 +1,8 @@
 import { cardElement } from './dom.js';
-import { addLikeClickButton, checkInputForm, checkDeleteButton, editComments } from './events.js';
-import { buttonElement, nameInputElement, comInputElement } from './dom.js';
+import { addLikeClickButton, editComments } from './events.js';
+import { buttonElement, inputName, inputText } from './dom.js';
 import { postAPI } from './api.js';
+import { checkInputForm, checkDeleteButton } from './check.js';
 
 const render = (comments) => {
     const userHtml = comments.map((user, index) => {

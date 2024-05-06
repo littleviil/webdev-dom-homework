@@ -1,9 +1,10 @@
-import { inputName, inputText } from './dom.js';
+import { loadingForm, loadingComment } from './dom.js';
 import { render } from './render.js';
 import { searchSwap } from './events.js';
+import { checkInputForm } from './check.js';
 
 export const getAPI = () => {
-    return fetch('https://wedev-api.sky.pro/api/v1/elena-saveleva/comments', {
+    return fetch("https://wedev-api.sky.pro/api/v1/elena-saveleva/comments", {
         method: "GET"
     }).then((response) => {
         if (response.status === 200) {
@@ -24,17 +25,17 @@ export const getAPI = () => {
             };
         });
         comments = appComments;
-        render();
+        render(comments);
     }).then(() => {
-        document.getElementById('start-loading').classList.add('load');
+        loadingForm.classList.add('load');
         document.getElementById('form').classList.remove('load');
     }).catch(() => {
         alert('Отсутствует соединение с интернетом или проблемы на сервере.');
     });
-};
+  };
 
-export function postAPI() {
-    document.getElementById('loading').classList.remove('load');
+export const postAPI = (inputName, inputText) => {
+    loadingComment.classList.remove('load');
     document.getElementById('form').classList.add('load');
 
     fetch('https://wedev-api.sky.pro/api/v1/elena-saveleva/comments', {
@@ -57,7 +58,7 @@ export function postAPI() {
             throw new Error("Сервер упал 500");
         }
     }).then(() => {
-        return getComments();
+        return getAPI();
     }).then((response) => {
         inputName.value = "";
         inputText.value = "";
@@ -69,11 +70,12 @@ export function postAPI() {
         console.warn(error);
         return error;
     }).finally(() => {
-        document.getElementById('loading').classList.add('load');
+        loadingComment.classList.add('load');
         document.getElementById('form').classList.remove('load');
     });
 
     render(comments);
-    checkInputForm(comments);
+    checkInputForm();
 };
-let comments = [];
+
+export let comments = [];

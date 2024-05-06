@@ -1,8 +1,9 @@
 import { render } from './render.js';
-import { postAPI } from './api.js';
+import { inputText } from './dom.js';
+import { checkInputForm } from './check.js';
 
 //Лайки
-export const addLikeClickButton = () => {
+export const addLikeClickButton = (comments) => {
     const clickLikes = document.querySelectorAll('.like-button');
 
     for (const clickLike of clickLikes) {
@@ -16,20 +17,20 @@ export const addLikeClickButton = () => {
                 comments[index].likes--;
                 comments[index].isLiked = false;
             }
-            render();
+            render(comments);
         });
     };
 };
 
 //Редактирование
-export const editComments = () => {
+export const editComments = (comments) => {
     const editButtons = document.querySelectorAll('.edit-button');
     var li = document.getElementById("comments").getElementsByTagName("li");
 
     for (const editButton of editButtons) {
         editButton.addEventListener("click", (event) => {
             event.stopPropagation();
-            userHTML = `
+            const userHTML = `
                 <div class="comment-header">
                     <input type="text" class="add-form-name" id="newNameTextId" value="${comments[editButton.dataset.index].author}"></input>
                     <div>${comments[editButton.dataset.index].date}</div>
@@ -49,12 +50,12 @@ export const editComments = () => {
                 comments[editButton.dataset.index].text = editText.value.replaceAll("<", "&lt").replaceAll(">", "&gt");
                 editName.value = "";
                 editText.value = "";
-                render();
+                render(comments);
             });
             document.getElementById('delete-button').addEventListener("click", (event) => {
                 event.stopPropagation();
                 checkInputForm();
-                render();
+                render(comments);
             });
         });
     };
@@ -69,34 +70,8 @@ export const editComments = () => {
     };
 };
 
-//Ввод
-export const input = () => {
-    buttonElement.addEventListener("click", (event) => {
-        event.stopPropagation();
-        inputText.classList.remove("error");
-        inputName.classList.remove("error");
-
-        if ((inputText.value.length === 0) || (inputName.value.length === 0)) {
-            if ((inputText.value.length === 0) && (inputName.value.length === 0)) {
-                inputName.classList.add("error");
-                inputText.classList.add("error");
-                return;
-            }
-            else if (inputName.value.length === 0) {
-                inputName.classList.add("error");
-                return;
-            }
-            else if (inputText.value.length === 0) {
-                inputText.classList.add("error");
-                return;
-            }
-        };
-        postAPI();
-    });
-}
-
 //Лайки
-export const LikeClickButton = () => {
+export const LikeClickButton = (comments) => {
     const clickLikes = document.querySelectorAll('.like-button');
 
     for (const clickLike of clickLikes) {
@@ -110,7 +85,7 @@ export const LikeClickButton = () => {
                 comments[index].likes--;
                 comments[index].isLiked = false;
             }
-            render();
+            render(comments);
         });
     };
 };

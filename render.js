@@ -1,7 +1,7 @@
 import { cardElement } from './dom.js';
 import { addLikeClickButton, editComments } from './events.js';
 import { buttonElement, inputName, inputText } from './dom.js';
-import { postAPI } from './api.js';
+import { postAPI } from './API.js';
 import { checkInputForm, checkDeleteButton } from './check.js';
 
 const render = (comments) => {
@@ -28,7 +28,7 @@ const render = (comments) => {
     cardElement.innerHTML = userHtml;
 
     addLikeClickButton(comments);
-    checkInputForm(comments);
+    checkInputForm();
     checkDeleteButton(comments);
     editComments(comments);
 };
@@ -57,7 +57,7 @@ const initClickHandler = () => {
                 return;
             }
         };
-        postAPI();
+        postAPI(inputName, inputText);
     });
 };
 

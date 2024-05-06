@@ -1,10 +1,9 @@
-import { initClickHandler } from './render.js';
+import { initClickHandler, render } from './render.js';
 import { checkInputForm } from './check.js';
-import { inputName, inputText, deleteButton } from './dom.js';
-import { getAPI } from './api.js';
+import { inputName, inputText, deleteButton, loadingForm } from './dom.js';
+import { getAPI, comments } from './API.js';
 
-
-document.getElementById('start-loading').classList.remove('load');
+loadingForm.classList.remove('load');
 document.getElementById('form').classList.add('load');
 
 //Enter
@@ -19,7 +18,7 @@ document.addEventListener("keyup", (event) => {
 deleteButton.addEventListener('click', (event) => {
     event.stopPropagation();
     comments.pop();
-    renderCommentList();
+    render(comments);
     checkInputForm();
 });
 

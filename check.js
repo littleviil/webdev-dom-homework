@@ -14,7 +14,7 @@ export function checkInputForm() {
 };
 
 //Неактивность кнопки удаления при 0 длинне массива объектов
-export function checkDeleteButton() {
+export function checkDeleteButton(comments) {
     if (comments.length === 0) {
         //Блокировка и серый
         deleteButton.disabled = true;

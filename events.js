@@ -75,7 +75,7 @@ export const input = () => {
         event.stopPropagation();
         inputText.classList.remove("error");
         inputName.classList.remove("error");
-    
+
         if ((inputText.value.length === 0) || (inputName.value.length === 0)) {
             if ((inputText.value.length === 0) && (inputName.value.length === 0)) {
                 inputName.classList.add("error");

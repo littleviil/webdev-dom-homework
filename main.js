@@ -1,6 +1,8 @@
-import { getAPI } from './api.js';
 import { initClickHandler } from './render.js';
 import { checkInputForm } from './check.js';
+import { inputName, inputText, deleteButton } from './dom.js';
+import { getAPI } from './api.js';
+
 
 document.getElementById('start-loading').classList.remove('load');
 document.getElementById('form').classList.add('load');

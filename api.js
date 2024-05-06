@@ -1,11 +1,9 @@
-import { buttonElement, inputName, inputText } from './dom.js';
+import { inputName, inputText } from './dom.js';
 import { render } from './render.js';
 import { searchSwap } from './events.js';
 
-export const myURL = 'https://wedev-api.sky.pro/api/v1/elena-saveleva/comments';
-
-export function getAPI() {
-    return fetch(myURL, {
+export const getAPI = () => {
+    return fetch('https://wedev-api.sky.pro/api/v1/elena-saveleva/comments', {
         method: "GET"
     }).then((response) => {
         if (response.status === 200) {
@@ -39,7 +37,7 @@ export function postAPI() {
     document.getElementById('loading').classList.remove('load');
     document.getElementById('form').classList.add('load');
 
-    fetch(myURL, {
+    fetch('https://wedev-api.sky.pro/api/v1/elena-saveleva/comments', {
         method: "POST",
         body: JSON.stringify({
             name: searchSwap(inputName.value),

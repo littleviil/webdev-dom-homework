@@ -26,5 +26,9 @@ inputName.addEventListener("input", checkInputForm);
 inputText.addEventListener("input", checkInputForm);
 checkInputForm();
 
-getAPI();
-initClickHandler();
+getAPI(comments);
+
+loadingForm.classList.add('load');
+document.getElementById('form').classList.remove('load');
+
+initClickHandler(comments);

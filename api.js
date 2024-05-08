@@ -1,10 +1,11 @@
-import { loadingForm, loadingComment } from './dom.js';
+import { loadingForm } from './dom.js';
 import { render } from './render.js';
 import { searchSwap } from './events.js';
-import { checkInputForm } from './check.js';
+
+const myURL = "https://wedev-api.sky.pro/api/v1/elena-saveleva/comments";
 
 export const getAPI = () => {
-    return fetch("https://wedev-api.sky.pro/api/v1/elena-saveleva/comments", {
+    return fetch(myURL, {
         method: "GET"
     }).then((response) => {
         if (response.status === 200) {
@@ -29,16 +30,12 @@ export const getAPI = () => {
     }).then(() => {
         loadingForm.classList.add('load');
         document.getElementById('form').classList.remove('load');
-    }).catch(() => {
-        alert('Отсутствует соединение с интернетом или проблемы на сервере.');
     });
   };
 
 export const postAPI = (inputName, inputText) => {
-    loadingComment.classList.remove('load');
-    document.getElementById('form').classList.add('load');
 
-    fetch('https://wedev-api.sky.pro/api/v1/elena-saveleva/comments', {
+    fetch(myURL, {
         method: "POST",
         body: JSON.stringify({
             name: searchSwap(inputName.value),
@@ -59,23 +56,7 @@ export const postAPI = (inputName, inputText) => {
         }
     }).then(() => {
         return getAPI();
-    }).then((response) => {
-        inputName.value = "";
-        inputText.value = "";
-        return response;
-    }).catch((error) => {
-        if (error.message === "Failed to fetch") {
-            alert("Кажется что-то пошло не так, попробуй позже..");
-        };
-        console.warn(error);
-        return error;
-    }).finally(() => {
-        loadingComment.classList.add('load');
-        document.getElementById('form').classList.remove('load');
     });
-
-    render(comments);
-    checkInputForm();
 };
 
 export let comments = [];

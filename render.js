@@ -35,7 +35,7 @@ const render = (comments) => {
 
 export { render };
 
-const initClickHandler = () => {
+const initClickHandler = (comments) => {
     //Ввод
     buttonElement.addEventListener("click", (event) => {
         event.stopPropagation();
@@ -57,7 +57,16 @@ const initClickHandler = () => {
                 return;
             }
         };
+        loadingComment.classList.remove('load');
+        document.getElementById('form').classList.add('load');
+
         postAPI(inputName, inputText);
+
+        loadingComment.classList.add('load');
+        document.getElementById('form').classList.remove('load');
+
+        render(comments);
+        checkInputForm();
     });
 };
 

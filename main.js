@@ -3,6 +3,11 @@ import { checkInputForm } from './check.js';
 import { inputName, inputText, deleteButton, loadingForm } from './dom.js';
 import { getAPI, comments } from './API.js';
 
+export let user = null;
+export function setUser(value) {
+    user = value;
+};
+
 loadingForm.classList.remove('load');
 document.getElementById('form').classList.add('load');
 

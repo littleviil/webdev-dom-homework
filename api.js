@@ -3,10 +3,24 @@ import { render } from './render.js';
 import { searchSwap } from './events.js';
 
 const myURL = "https://wedev-api.sky.pro/api/v1/elena-saveleva/comments";
+const host = "https://wedev-api.sky.pro/api/user/login";
+
+export let token;
+export const setToken = (newToken) => {
+    token = newToken;
+};
+
+export let UserName;
+export function setUserName(newName) {
+    UserName = newName;
+}
 
 export const getAPI = () => {
     return fetch(myURL, {
-        method: "GET"
+        method: "GET",
+        headers: {
+            Authorization: `Bearer ${token}`,
+        }
     }).then((response) => {
         if (response.status === 200) {
             return response.json();
@@ -37,6 +51,9 @@ export const postAPI = (inputName, inputText) => {
 
     fetch(myURL, {
         method: "POST",
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify({
             name: searchSwap(inputName.value),
             text: searchSwap(inputText.value),
@@ -57,6 +74,22 @@ export const postAPI = (inputName, inputText) => {
     }).then(() => {
         return getAPI();
     });
+};
+
+export const loginUser = ({ login, password }) => {
+    return fetch(host, {
+        method: "POST",
+        body: JSON.stringify({
+            login: searchSwap(login),
+            password: searchSwap(password),
+        }),
+    }).then((response) => {
+        if (response.status === 201) return getCommentsFromServer();
+        if (response.status === 500) alert("Сервер сломался, попробуй позже");
+        if (response.status === 400) alert("Введен ннверный логин или пароль");
+    
+        return "error";
+    })
 };
 
 export let comments = [];

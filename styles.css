@@ -211,4 +211,8 @@ body {
   color: #ffffff;
   display: flex;
   justify-content: center;
+  text-decoration: none;
+  &:hover{
+    text-decoration: underline;
+  }
 }

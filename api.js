@@ -3,16 +3,16 @@ import { render } from './render.js';
 import { searchSwap } from './events.js';
 
 const myURL = "https://wedev-api.sky.pro/api/v1/elena-saveleva/comments";
-const host = "https://wedev-api.sky.pro/api/user/login";
+const host = "https://wedev-api.sky.pro/api/user";
 
 export let token;
 export const setToken = (newToken) => {
     token = newToken;
 };
 
-export let UserName;
+export let userName;
 export function setUserName(newName) {
-    UserName = newName;
+    userName = newName;
 }
 
 export const getAPI = () => {
@@ -76,20 +76,39 @@ export const postAPI = (inputName, inputText) => {
     });
 };
 
-export const loginUser = ({ login, password }) => {
-    return fetch(host, {
-        method: "POST",
-        body: JSON.stringify({
-            login: searchSwap(login),
-            password: searchSwap(password),
-        }),
+export function login({ login, password }) {
+    return fetch(host + "/login", {
+      method: "POST",
+      body: JSON.stringify({
+        login,
+        password,
+        //forceError: true,
+      }),
     }).then((response) => {
-        if (response.status === 201) return getCommentsFromServer();
-        if (response.status === 500) alert("Сервер сломался, попробуй позже");
-        if (response.status === 400) alert("Введен ннверный логин или пароль");
-    
-        return "error";
-    })
-};
+      if (response.status === 201) return response.json(); 
+      if (response.status === 500) alert("Сервер упал, попробуй позже");
+      if (response.status === 400) alert("Введен неверный логин или пароль");
+  
+      return "error";
+    });
+  }
+  
+  export function registr({ name, login, password }) {
+    return fetch(host, {
+      method: "POST",
+      body: JSON.stringify({
+        name,
+        login,
+        password,
+        //forceError: true,
+      }),
+    }).then((response) => {
+      if (response.status === 201) return response.json();
+      if (response.status === 500) alert("Сервер цпал, попробуй позже");
+      if (response.status === 400) alert("Введен неверный логин или пароль");
+  
+      return "error";
+    });
+  }
 
 export let comments = [];

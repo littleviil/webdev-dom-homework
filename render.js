@@ -1,7 +1,7 @@
-import { cardElement } from './dom.js';
+import { cardElement, linkReg } from './dom.js';
 import { addLikeClickButton, editComments } from './events.js';
 import { buttonElement, inputName, inputText, loadingComment } from './dom.js';
-import { postAPI } from './API.js';
+import { postAPI, token, userName } from './API.js';
 import { checkInputForm, checkDeleteButton } from './check.js';
 
 const render = (comments) => {
@@ -25,6 +25,31 @@ const render = (comments) => {
         </div>
       </li>`
   }).join('');
+  if (token)
+    bottomContent = `<div class="add-form">
+        <input
+          type="text"
+          id="name-input"
+          value="${userName}"
+          class="add-form-name"
+          placeholder="Введите ваше имя"
+          disabled
+        />
+        <textarea
+          type="textarea"
+          id="comment-input"
+          class="add-form-text"
+          placeholder="Введите ваш коментарий"
+          rows="4"
+        ></textarea>
+        <div class="add-form-row">
+          <button id="add-button" disabled class="add-form-button">
+            Написать
+          </button>
+        </div>
+      </div>`;
+  else linkReg.classList.add("link-active");
+
   cardElement.innerHTML = userHtml;
 
   addLikeClickButton(comments);

@@ -1,6 +1,6 @@
 import { login, setToken, setUserName, token } from "./API.js";
 import { searchSwap } from "./events.js";
-import { linkReg } from "./dom.js";
+import { linkReg, inpurForm } from "./dom.js";
 import { renderReg } from "./renderReg.js";
 import { getCommentsFromServer } from "./main.js";
 
@@ -48,6 +48,7 @@ export const renderLogin = ({getCommentsFromServer}) => {
         console.log(token);
       }).then(() => {
         getCommentsFromServer();
+        inpurForm.classList.remove("disguise");
       });
   });
 };

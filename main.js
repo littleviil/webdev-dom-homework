@@ -1,6 +1,6 @@
 import { initClickHandler, render } from './render.js';
 import { checkInputForm } from './check.js';
-import { inputName, inputText, deleteButton, loadingForm } from './dom.js';
+import { inputName, inputText, deleteButton, loadingForm, inpurForm } from './dom.js';
 import { getAPI, comments } from './API.js';
 
 export let user = null;
@@ -10,6 +10,7 @@ export function setUser(value) {
 
 loadingForm.classList.remove('load');
 document.getElementById('form').classList.add('load');
+inpurForm.classList.add("disguise");
 
 //Enter
 document.addEventListener("keyup", (event) => {

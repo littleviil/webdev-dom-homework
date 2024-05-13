@@ -34,31 +34,25 @@ checkInputForm();
 getAPI(comments);
 
 export function getCommentsFromServer() {
-    preloaderElement.classList.remove("disguise");
-    getAPI().then((responseData) => {
-        console.log(responseData);
-  
-        containerPeople = responseData.comments.map((comment) => {
-          return {
-            name: comment.author.name,
-            date: printDate(new Date(comment.date)),
-            text: comment.text,
-            likes: comment.likes,
-            isLiked: false,
-            isEdit: false,
-          };
-        });
-        renderContainerPeople({
-          containerPeople,
-        });
-        preloaderElement.classList.add("disguise");
-      }).catch((error) => {
-        if (error === "Failed to fetch")
-          alert("Отсутствует интернет, попробуйте позже");
-        else
-          throw error
+  getAPI().then((responseData) => {
+      console.log(responseData);
+      comments = responseData.comments.map((comment) => {
+        return {
+          name: comment.author.name,
+          date: printDate(new Date(comment.date)),
+          text: comment.text,
+          likes: comment.likes,
+          isLiked: false,
+          isEdit: false,
+        };
       });
-  };
+    }).catch((error) => {
+      if (error === "Failed to fetch")
+        alert("Кажется, у вас сломался интернет, попробуйте позже");
+      else
+        throw error
+    });
+}
 
 loadingForm.classList.add('load');
 document.getElementById('form').classList.remove('load');

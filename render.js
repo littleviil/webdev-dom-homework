@@ -3,6 +3,7 @@ import { addLikeClickButton, editComments } from './events.js';
 import { buttonElement, inputName, inputText, loadingComment } from './dom.js';
 import { postAPI, token, userName } from './API.js';
 import { checkInputForm, checkDeleteButton } from './check.js';
+import { loginReg } from './renderLogin.js';
 
 const render = (comments) => {
   const userHtml = comments.map((user, index) => {
@@ -56,6 +57,7 @@ const render = (comments) => {
   checkInputForm();
   checkDeleteButton(comments);
   editComments(comments);
+  loginReg();
 };
 
 export { render };

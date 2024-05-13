@@ -48,7 +48,6 @@ export const getAPI = () => {
   };
 
 export const postAPI = (inputName, inputText) => {
-
     fetch(myURL, {
         method: "POST",
         headers: {
@@ -88,10 +87,9 @@ export function login({ login, password }) {
       if (response.status === 201) return response.json(); 
       if (response.status === 500) alert("Сервер упал, попробуй позже");
       if (response.status === 400) alert("Введен неверный логин или пароль");
-  
       return "error";
     });
-  }
+  };
   
   export function registr({ name, login, password }) {
     return fetch(host, {
@@ -104,11 +102,10 @@ export function login({ login, password }) {
       }),
     }).then((response) => {
       if (response.status === 201) return response.json();
-      if (response.status === 500) alert("Сервер цпал, попробуй позже");
+      if (response.status === 500) alert("Сервер упал, попробуй позже");
       if (response.status === 400) alert("Введен неверный логин или пароль");
-  
       return "error";
     });
-  }
+  };
 
 export let comments = [];

@@ -6,5 +6,5 @@ export const inputText = document.getElementById("commentTextId");
 export const deleteButton = document.getElementById("delete-button");
 export const loadingForm = document.getElementById('start-loading');
 export const loadingComment = document.getElementById('loading');
-export const linkReg = document.getElementById('reg');
-export const inpurForm = document.getElementById('form');
+
+export const inputForm = document.getElementById('form');

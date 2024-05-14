@@ -1,7 +1,6 @@
 import { registr, setToken, setUserName, token } from "./API.js";
 import { searchSwap } from "./events.js";
 import { renderLogin } from "./renderLogin.js";
-import { inpurForm } from "./dom.js";
 
 export const renderReg = ({getCommentsFromServer}) => {
     const appElement = document.getElementById("app");
@@ -56,7 +55,6 @@ export const renderReg = ({getCommentsFromServer}) => {
             console.log(token);
         }).then(() => {
             getCommentsFromServer();
-            inpurForm.classList.remove("disguise");
         });
     });
 };

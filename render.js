@@ -1,6 +1,6 @@
-import { cardElement, linkReg } from './dom.js';
+import { cardElement } from './dom.js';
 import { addLikeClickButton, editComments } from './events.js';
-import { buttonElement, inputName, inputText, loadingComment } from './dom.js';
+import { buttonElement, inputName, inputText, loadingComment, inputForm } from './dom.js';
 import { postAPI, token, userName } from './API.js';
 import { checkInputForm, checkDeleteButton } from './check.js';
 import { loginReg } from './renderLogin.js';
@@ -26,32 +26,28 @@ const render = (comments) => {
         </div>
       </li>`
   }).join('');
+  let bottomContent;
+
   if (token)
-    bottomContent = `<div class="add-form">
-        <input
-          type="text"
-          id="name-input"
-          value="${userName}"
-          class="add-form-name"
-          placeholder="Введите ваше имя"
-          disabled
-        />
-        <textarea
-          type="textarea"
-          id="comment-input"
-          class="add-form-text"
-          placeholder="Введите ваш коментарий"
-          rows="4"
-        ></textarea>
+    bottomContent = `<div class="add-form" id="form">
+      <input type="text" class="add-form-name" id="nameTextId" value="${user.author.name}" placeholder="Введите ваше имя" />
+        <textarea type="textarea" class="add-form-text" id="commentTextId" placeholder="Введите ваш коментарий"
+          rows="4"></textarea>
         <div class="add-form-row">
-          <button id="add-button" disabled class="add-form-button">
-            Написать
-          </button>
+          <button class="add-form-button" id="add-buttonId">Написать</button>
+          <button id="delete-button" class="add-form-button">Удалить</button>
         </div>
       </div>`;
-  else linkReg.classList.add("link-active");
+  else
+    bottomContent = `<a href="#" class="link-reg" id="reg">Чтобы добавить комментарий, авторизируйтесь</a>`;
 
-  cardElement.innerHTML = userHtml;
+  const appHtml = `
+  <div class="container">
+    <ul id="list" class="comments">${userHtml}</ul>
+    ${bottomContent}
+  </div>`;
+
+  cardElement.innerHTML = appHtml;
 
   addLikeClickButton(comments);
   checkInputForm();
@@ -91,7 +87,7 @@ const initClickHandler = (comments) => {
 
     inputName.value = "";
     inputText.value = "";
-    
+
     loadingComment.classList.add('load');
     document.getElementById('form').classList.remove('load');
 

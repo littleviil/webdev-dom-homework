@@ -47,7 +47,7 @@ export const renderLogin = ({getCommentsFromServer}) => {
         console.log(token);
       }).then(() => {
         getCommentsFromServer();
-      });
+      }); 
   });
 };
 

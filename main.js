@@ -1,7 +1,7 @@
-import { initClickHandler, render } from './render.js';
-import { checkInputForm } from './check.js';
-import { inputName, inputText, deleteButton, loadingForm, inputForm } from './dom.js';
+// import { initClickHandler } from './render.js';
+import { loadingForm } from './dom.js';
 import { getAPI, comments } from './API.js';
+import { loginReg } from './renderLogin.js';
 
 export let user = null;
 export function setUser(value) {
@@ -9,28 +9,6 @@ export function setUser(value) {
 };
 
 loadingForm.classList.remove('load');
-document.getElementById('form').classList.add('load');
-inputForm.classList.add("disguise");
-
-//Enter
-document.addEventListener("keyup", (event) => {
-  if (event.code === 'Enter') {
-    document.getElementById("add-buttonId").click();
-    return;
-  }
-});
-
-//Удаление последнего комментария
-deleteButton.addEventListener('click', (event) => {
-  event.stopPropagation();
-  comments.pop();
-  render(comments);
-  checkInputForm();
-});
-
-inputName.addEventListener("input", checkInputForm);
-inputText.addEventListener("input", checkInputForm);
-checkInputForm();
 
 getAPI(comments);
 
@@ -53,9 +31,14 @@ export function getCommentsFromServer() {
     else
       throw error
   });
-}
+};
 
-loadingForm.classList.add('load');
-document.getElementById('form').classList.remove('load');
+//Enter
+document.addEventListener("keyup", (event) => {
+  if (event.code === 'Enter') {
+    document.getElementById("add-buttonId").click();
+    return;
+  }
+});
 
-initClickHandler(comments);
+loadingForm.classList.add('load'); 

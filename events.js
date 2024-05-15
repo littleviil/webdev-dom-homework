@@ -94,3 +94,18 @@ export const LikeClickButton = (comments) => {
 export const searchSwap = (comment) => {
     return comment.replaceAll("<", "&lt").replaceAll(">", "&gt").replaceAll("✦♡", "<div class='quote'>").replaceAll("♡✦", "</div>");
 }
+
+//Удаление последнего комментария
+export const deleteClick = (comments) => {
+    deleteButton.addEventListener('click', (event) => {
+        event.stopPropagation();
+        comments.pop();
+        render(comments);
+        checkInputForm();
+    });
+};
+
+export const initEvent = () => {
+    addLikeClickButton(comments);
+    editComments(comments);
+};

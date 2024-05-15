@@ -43,7 +43,6 @@ export const getAPI = () => {
         render(comments);
     }).then(() => {
         loadingForm.classList.add('load');
-        document.getElementById('form').classList.remove('load');
     });
   };
 

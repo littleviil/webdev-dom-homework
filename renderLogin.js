@@ -1,9 +1,8 @@
-import { login, setToken, setUserName, token } from "./API.js";
+import { login, setToken, setUserName, token, getAPI } from "./API.js";
 import { searchSwap } from "./events.js";
 import { renderReg } from "./renderReg.js";
-import { getCommentsFromServer } from "./main.js";
 
-export const renderLogin = ({getCommentsFromServer}) => {
+export const renderLogin = () => {
   const appElement = document.getElementById("app");
   const loginHtml = `
       <div class="container">
@@ -33,7 +32,7 @@ export const renderLogin = ({getCommentsFromServer}) => {
   const loginInputElement = document.getElementById("login-input");
   const passwordInputElement = document.getElementById("password-input");
 
-  link.addEventListener("click", () => renderReg({getCommentsFromServer}));
+  link.addEventListener("click", () => renderReg());
 
   buttonLogin.addEventListener("click", () => {
     login({
@@ -46,15 +45,7 @@ export const renderLogin = ({getCommentsFromServer}) => {
         setUserName(responseData.user.name);
         console.log(token);
       }).then(() => {
-        getCommentsFromServer();
+        getAPI();
       }); 
-  });
-};
-
-export const loginReg = () => {
-  document.getElementById('reg').addEventListener("click", (event) => {
-    event.stopPropagation();
-
-    renderLogin({getCommentsFromServer});
   });
 };

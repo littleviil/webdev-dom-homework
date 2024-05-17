@@ -1,12 +1,17 @@
-import { buttonElement, inputName, inputText, loadingComment } from './dom.js';
+import { loadingComment } from './dom.js';
 import { postAPI, token, userName } from './API.js';
 import { checkInputForm } from './check.js';
-import { loginReg } from './renderLogin.js';
+import { renderLogin } from './renderLogin.js'
+import { initEvent } from './events.js';
+// import { getCommentsFromServer } from './main.js';
 
 const initClickHandler = (comments) => {
   //Ввод
+  const buttonElement = document.getElementById("add-buttonId");
   buttonElement.addEventListener("click", (event) => {
     event.stopPropagation();
+    const inputName = document.getElementById("nameTextId");
+    const inputText = document.getElementById("commentTextId");
     inputText.classList.remove("error");
     inputName.classList.remove("error");
 
@@ -37,7 +42,7 @@ const initClickHandler = (comments) => {
     document.getElementById('form').classList.remove('load');
 
     render(comments);
-    checkInputForm();
+    checkInputForm({inputName, inputText, buttonElement});
   });
 };
 
@@ -83,6 +88,8 @@ const render = (comments) => {
     ${bottomContent}
   </div>`;
     appElement.innerHTML = appHtml;
+    initClickHandler(comments);
+    initEvent(comments);
   }
   else {
     bottomContent = `<a href="#" class="link-reg" id="reg">Чтобы добавить комментарий, авторизируйтесь</a>`;
@@ -91,11 +98,15 @@ const render = (comments) => {
           <ul class="comments" id="comments">${userHtml}</ul>
           ${bottomContent}
         </div>`;
-      // registr.id = "regYes";
+    // registr.id = "regYes";
     appElement.innerHTML = appHtml;
+
+    document.getElementById('reg').addEventListener("click", (event) => {
+      event.stopPropagation();
+
+      renderLogin();
+    });
   }
-  loginReg();
-  // initClickHandler(comments);
 };
 
 export { render };

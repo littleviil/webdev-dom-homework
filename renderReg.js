@@ -1,8 +1,8 @@
-import { registr, setToken, setUserName, token } from "./API.js";
+import { getAPI, registr, setToken, setUserName, token } from "./API.js";
 import { searchSwap } from "./events.js";
 import { renderLogin } from "./renderLogin.js";
 
-export const renderReg = ({getCommentsFromServer}) => {
+export const renderReg = () => {
     const appElement = document.getElementById("app");
     const loginHtml = `
       <div class="container">
@@ -40,7 +40,7 @@ export const renderReg = ({getCommentsFromServer}) => {
     const loginInputElement = document.getElementById("login-input");
     const passwordInputElement = document.getElementById("password-input");
     const nameInputElement = document.getElementById("name-input");
-    link.addEventListener("click", () => renderLogin({getCommentsFromServer}));
+    link.addEventListener("click", () => renderLogin());
 
     buttonLogin.addEventListener("click", () => {
         registr({
@@ -54,7 +54,7 @@ export const renderReg = ({getCommentsFromServer}) => {
             setUserName(responseData.user.name);
             console.log(token);
         }).then(() => {
-            getCommentsFromServer();
+            getAPI();
         });
     });
 };

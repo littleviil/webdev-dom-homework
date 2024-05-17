@@ -1,6 +1,7 @@
 import { render } from './render.js';
 import { inputText } from './dom.js';
 import { checkInputForm } from './check.js';
+import { comments } from './API.js';
 
 //Лайки
 export const addLikeClickButton = (comments) => {
@@ -54,7 +55,6 @@ export const editComments = (comments) => {
             });
             document.getElementById('delete-button').addEventListener("click", (event) => {
                 event.stopPropagation();
-                checkInputForm();
                 render(comments);
             });
         });
@@ -63,9 +63,7 @@ export const editComments = (comments) => {
     for (const liClick of li) {
         liClick.addEventListener("click", (event) => {
             event.stopPropagation();
-
-            inputText.value = "✦♡ " + comments[liClick.dataset.index].text + `\n Автор: ` + comments[liClick.dataset.index].author + `♡✦\n`;
-            checkInputForm();
+            document.getElementById("commentTextId").value = "✦♡ " + comments[liClick.dataset.index].text + `\n Автор: ` + comments[liClick.dataset.index].author + `♡✦\n`;
         });
     };
 };
@@ -97,15 +95,15 @@ export const searchSwap = (comment) => {
 
 //Удаление последнего комментария
 export const deleteClick = (comments) => {
-    deleteButton.addEventListener('click', (event) => {
+    document.getElementById("delete-button").addEventListener('click', (event) => {
         event.stopPropagation();
         comments.pop();
         render(comments);
-        checkInputForm();
     });
 };
 
-export const initEvent = () => {
+export const initEvent = (comments) => {
     addLikeClickButton(comments);
     editComments(comments);
+    deleteClick(comments);
 };

@@ -1,7 +1,4 @@
 import { render } from './render.js';
-import { inputText } from './dom.js';
-import { checkInputForm } from './check.js';
-import { comments } from './API.js';
 
 //Лайки
 export const addLikeClickButton = (comments) => {

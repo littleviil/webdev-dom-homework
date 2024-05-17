@@ -1,4 +1,4 @@
-import { loadingComment } from './dom.js';
+import { loadingComment, inputForm } from './dom.js';
 import { postAPI, token, userName } from './API.js';
 import { checkInputForm } from './check.js';
 import { renderLogin } from './renderLogin.js'
@@ -10,6 +10,9 @@ const initClickHandler = (comments) => {
   const buttonElement = document.getElementById("add-buttonId");
   buttonElement.addEventListener("click", (event) => {
     event.stopPropagation();
+    loadingComment.classList.remove('load');
+    inputForm.classList.add('load');
+
     const inputName = document.getElementById("nameTextId");
     const inputText = document.getElementById("commentTextId");
     inputText.classList.remove("error");
@@ -30,19 +33,17 @@ const initClickHandler = (comments) => {
         return;
       }
     };
-    loadingComment.classList.remove('load');
-    document.getElementById('form').classList.add('load');
 
     postAPI(inputName, inputText);
 
     inputName.value = "";
     inputText.value = "";
 
-    loadingComment.classList.add('load');
-    document.getElementById('form').classList.remove('load');
-
     render(comments);
-    checkInputForm({inputName, inputText, buttonElement});
+    checkInputForm({ inputName, inputText, buttonElement });
+
+    loadingComment.classList.add('load');
+    inputForm.classList.remove('load');
   });
 };
 
@@ -106,7 +107,7 @@ const render = (comments) => {
 
       renderLogin();
     });
-  }
+  };
 };
 
 export { render };

@@ -8,30 +8,7 @@ export function setUser(value) {
 };
 
 loadingForm.classList.remove('load');
-
 getAPI(comments);
-
-// export function getCommentsFromServer() {
-//   getAPI().then((responseData) => {
-//     console.log(responseData);
-//     commentsList = responseData.comments.map((comment) => {
-//       return {
-//         name: comment.author.name,
-//         date: printDate(new Date(comment.date)),
-//         text: comment.text,
-//         likes: comment.likes,
-//         isLiked: false,
-//         isEdit: false,
-//       };
-//     });
-//     render({commentsList});
-//   }).catch((error) => {
-//     if (error === "Failed to fetch")
-//       alert("Кажется, у вас сломался интернет, попробуйте позже");
-//     else
-//       throw error
-//   });
-// };
 
 //Enter
 document.addEventListener("keyup", (event) => {
@@ -40,5 +17,3 @@ document.addEventListener("keyup", (event) => {
     return;
   }
 });
-
-loadingForm.classList.add('load'); 

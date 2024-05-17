@@ -1,4 +1,4 @@
-import { loadingComment, inputForm } from './dom.js';
+import { loadingComment } from './dom.js';
 import { postAPI, token, userName } from './API.js';
 import { checkInputForm } from './check.js';
 import { renderLogin } from './renderLogin.js'
@@ -11,7 +11,7 @@ const initClickHandler = (comments) => {
   buttonElement.addEventListener("click", (event) => {
     event.stopPropagation();
     loadingComment.classList.remove('load');
-    inputForm.classList.add('load');
+    document.getElementById('form').classList.add('load');
 
     const inputName = document.getElementById("nameTextId");
     const inputText = document.getElementById("commentTextId");
@@ -43,7 +43,7 @@ const initClickHandler = (comments) => {
     checkInputForm({ inputName, inputText, buttonElement });
 
     loadingComment.classList.add('load');
-    inputForm.classList.remove('load');
+    document.getElementById('form').classList.remove('load');
   });
 };
 

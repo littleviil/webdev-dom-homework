@@ -34,16 +34,17 @@ const initClickHandler = (comments) => {
       }
     };
 
-    postAPI(inputName, inputText);
+    postAPI(inputName, inputText).then(() => {
+      return getAPI();
+    }).then(() => {
+      inputName.value = "";
+      inputText.value = "";
 
-    inputName.value = "";
-    inputText.value = "";
+      checkInputForm({ inputName, inputText, buttonElement });
 
-    render(comments);
-    checkInputForm({ inputName, inputText, buttonElement });
-
-    loadingComment.classList.add('load');
-    document.getElementById('form').classList.remove('load');
+      loadingComment.classList.add("load");
+      document.getElementById("form").classList.remove("load");
+    });
   });
 };
 

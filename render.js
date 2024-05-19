@@ -1,17 +1,13 @@
-import { loadingComment } from './dom.js';
-import { postAPI, token, userName } from './API.js';
+import { postAPI, getAPI, token, userName } from './API.js';
 import { checkInputForm } from './check.js';
 import { renderLogin } from './renderLogin.js'
 import { initEvent } from './events.js';
-// import { getCommentsFromServer } from './main.js';
 
 const initClickHandler = (comments) => {
   //Ввод
   const buttonElement = document.getElementById("add-buttonId");
   buttonElement.addEventListener("click", (event) => {
     event.stopPropagation();
-    loadingComment.classList.remove('load');
-    document.getElementById('form').classList.add('load');
 
     const inputName = document.getElementById("nameTextId");
     const inputText = document.getElementById("commentTextId");
@@ -37,13 +33,7 @@ const initClickHandler = (comments) => {
     postAPI(inputName, inputText).then(() => {
       return getAPI();
     }).then(() => {
-      inputName.value = "";
-      inputText.value = "";
-
       checkInputForm({ inputName, inputText, buttonElement });
-
-      loadingComment.classList.add("load");
-      document.getElementById("form").classList.remove("load");
     });
   });
 };
@@ -75,7 +65,8 @@ const render = (comments) => {
 
   let bottomContent;
   if (token) {
-    bottomContent = `<div class="add-form" id="form">
+    bottomContent = `<div id="loading" class="add-form load">Комментарий добавляется, подождите пожалуйста!</div>
+    <div class="add-form" id="form">
       <input type="text" class="add-form-name" id="nameTextId" value="${userName}" placeholder="Введите ваше имя" />
         <textarea type="textarea" class="add-form-text" id="commentTextId" placeholder="Введите ваш коментарий"
           rows="4"></textarea>
@@ -87,6 +78,7 @@ const render = (comments) => {
     const appHtml = `
   <div class="container">
     <ul class="comments" id="comments">${userHtml}</ul>
+    <div id="loading" class="add-form load">Комментарий добавляется, подождите пожалуйста!</div>
     ${bottomContent}
   </div>`;
     appElement.innerHTML = appHtml;

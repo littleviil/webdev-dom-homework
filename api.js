@@ -44,10 +44,12 @@ export const getAPI = () => {
     }).then(() => {
         loadingForm.classList.add('load');
     });
-  };
+};
 
 export const postAPI = (inputName, inputText) => {
-    fetch(myURL, {
+    document.getElementById('loading').classList.remove('load');
+    document.getElementById('form').classList.add('load');
+    return fetch(myURL, {
         method: "POST",
         headers: {
             Authorization: `Bearer ${token}`,
@@ -70,41 +72,44 @@ export const postAPI = (inputName, inputText) => {
             throw new Error("Сервер упал 500");
         }
     }).then(() => {
-        return getAPI();
+        inputName.value = "";
+        inputText.value = "";
+        document.getElementById('loading').classList.add("load");
+        document.getElementById("form").classList.remove("load");
     });
 };
 
 export function login({ login, password }) {
     return fetch(host + "/login", {
-      method: "POST",
-      body: JSON.stringify({
-        login,
-        password,
-        //forceError: true,
-      }),
+        method: "POST",
+        body: JSON.stringify({
+            login,
+            password,
+            //forceError: true,
+        }),
     }).then((response) => {
-      if (response.status === 201) return response.json(); 
-      if (response.status === 500) alert("Сервер упал, попробуй позже");
-      if (response.status === 400) alert("Введен неверный логин или пароль");
-      return "error";
+        if (response.status === 201) return response.json();
+        if (response.status === 500) alert("Сервер упал, попробуй позже");
+        if (response.status === 400) alert("Введен неверный логин или пароль");
+        return "error";
     });
-  };
-  
-  export function registr({ name, login, password }) {
+};
+
+export function registr({ name, login, password }) {
     return fetch(host, {
-      method: "POST",
-      body: JSON.stringify({
-        name,
-        login,
-        password,
-        //forceError: true,
-      }),
+        method: "POST",
+        body: JSON.stringify({
+            name,
+            login,
+            password,
+            //forceError: true,
+        }),
     }).then((response) => {
-      if (response.status === 201) return response.json();
-      if (response.status === 500) alert("Сервер упал, попробуй позже");
-      if (response.status === 400) alert("Введен неверный логин или пароль");
-      return "error";
+        if (response.status === 201) return response.json();
+        if (response.status === 500) alert("Сервер упал, попробуй позже");
+        if (response.status === 400) alert("Введен неверный логин или пароль");
+        return "error";
     });
-  };
+};
 
 export let comments = [];

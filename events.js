@@ -1,5 +1,10 @@
 import { render } from './render.js';
 
+//Замена спец.символов
+export const searchSwap = (comment) => {
+    return comment.replaceAll("<", "&lt").replaceAll(">", "&gt").replaceAll("✦♡", "<div class='quote'>").replaceAll("♡✦", "</div>");
+}
+
 //Лайки
 export const addLikeClickButton = (comments) => {
     const clickLikes = document.querySelectorAll('.like-button');
@@ -30,7 +35,7 @@ export const editComments = (comments) => {
             event.stopPropagation();
             const userHTML = `
                 <div class="comment-header">
-                    <input type="text" class="add-form-name" id="newNameTextId" value="${comments[editButton.dataset.index].author}"></input>
+                    <div>${comments[editButton.dataset.index].author}</div>
                     <div>${comments[editButton.dataset.index].date}</div>
                 </div>
                 <textarea type="textarea" class="add-form-text" id="newCommentTextId" rows="4">${comments[editButton.dataset.index].text}</textarea>
@@ -40,13 +45,10 @@ export const editComments = (comments) => {
                 </div>`;
             li[editButton.dataset.index].innerHTML = userHTML;
             li[editButton.dataset.index].classList.add("edit-add-form");
-            const editName = document.getElementById("newNameTextId");
             const editText = document.getElementById("newCommentTextId");
             document.getElementById('save-buttonId').addEventListener("click", (event) => {
                 event.stopPropagation();
-                comments[editButton.dataset.index].author = editName.value.replaceAll("<", "&lt").replaceAll(">", "&gt");
-                comments[editButton.dataset.index].text = editText.value.replaceAll("<", "&lt").replaceAll(">", "&gt");
-                editName.value = "";
+                comments[editButton.dataset.index].text = searchSwap(editText.value);
                 editText.value = "";
                 render(comments);
             });
@@ -84,11 +86,6 @@ export const LikeClickButton = (comments) => {
         });
     };
 };
-
-//Замена спец.символов
-export const searchSwap = (comment) => {
-    return comment.replaceAll("<", "&lt").replaceAll(">", "&gt").replaceAll("✦♡", "<div class='quote'>").replaceAll("♡✦", "</div>");
-}
 
 //Удаление последнего комментария
 export const deleteClick = (comments) => {

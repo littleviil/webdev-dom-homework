@@ -31,9 +31,15 @@ const initClickHandler = (comments) => {
     };
 
     postAPI(inputName, inputText).then(() => {
+      document.getElementById('loading').classList.remove('load');
+      document.getElementById('form').classList.add('load');
+    }).then(() => {
       return getAPI();
     }).then(() => {
       checkInputForm({ inputName, inputText, buttonElement });
+    }).then(() => {
+      document.getElementById('loading').classList.add("load");
+      document.getElementById("form").classList.remove("load");
     });
   });
 };

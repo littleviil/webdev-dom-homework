@@ -47,8 +47,6 @@ export const getAPI = () => {
 };
 
 export const postAPI = (inputName, inputText) => {
-    document.getElementById('loading').classList.remove('load');
-    document.getElementById('form').classList.add('load');
     return fetch(myURL, {
         method: "POST",
         headers: {
@@ -74,8 +72,6 @@ export const postAPI = (inputName, inputText) => {
     }).then(() => {
         inputName.value = "";
         inputText.value = "";
-        document.getElementById('loading').classList.add("load");
-        document.getElementById("form").classList.remove("load");
     });
 };
 

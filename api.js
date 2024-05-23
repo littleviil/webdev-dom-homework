@@ -41,8 +41,6 @@ export const getAPI = () => {
         });
         comments = appComments;
         render(comments);
-    }).then(() => {
-        loadingForm.classList.add('load');
     });
 };
 

@@ -36,6 +36,7 @@ const initClickHandler = (comments) => {
     }).then(() => {
       return getAPI();
     }).then(() => {
+      loadingForm.classList.add('load');
       checkInputForm({ inputName, inputText, buttonElement });
     }).then(() => {
       document.getElementById('loading').classList.add("load");

@@ -46,6 +46,8 @@ export const renderLogin = () => {
         console.log(token);
       }).then(() => {
         getAPI();
+      }).then(() => {
+        loadingForm.classList.add('load');
       }); 
   });
 };

@@ -16,8 +16,9 @@ export const renderLogin = () => {
             placeholder="Ваш логин"
           />
           <input
-            type="text"
+            type="password"
             id="password-input"
+            value=""
             class="add-form-login"
             placeholder="Ваш пароль"
           />

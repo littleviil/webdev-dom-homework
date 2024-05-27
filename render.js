@@ -1,7 +1,7 @@
 import { postAPI, getAPI, token, userName } from './API.js';
 import { checkInputForm } from './check.js';
 import { renderLogin } from './renderLogin.js'
-import { initEvent } from './events.js';
+import { initEvent, searchSwap } from './events.js';
 
 const initClickHandler = (comments) => {
   //Ввод
@@ -30,6 +30,8 @@ const initClickHandler = (comments) => {
       }
     };
 
+    searchSwap(inputName);
+    searchSwap(inputText);
     postAPI(inputName, inputText).then(() => {
       document.getElementById('loading').classList.remove('load');
       document.getElementById('form').classList.add('load');
@@ -39,6 +41,8 @@ const initClickHandler = (comments) => {
       loadingForm.classList.add('load');
       checkInputForm({ inputName, inputText, buttonElement });
     }).then(() => {
+      inputName = "";
+      inputText = "";
       document.getElementById('loading').classList.add("load");
       document.getElementById("form").classList.remove("load");
     });
@@ -89,6 +93,7 @@ const render = (comments) => {
     ${bottomContent}
   </div>`;
     appElement.innerHTML = appHtml;
+    document.getElementById('nameTextId').readOnly = true;
     initClickHandler(comments);
     initEvent(comments);
   }
@@ -99,12 +104,10 @@ const render = (comments) => {
           <ul class="comments" id="comments">${userHtml}</ul>
           ${bottomContent}
         </div>`;
-    // registr.id = "regYes";
     appElement.innerHTML = appHtml;
 
     document.getElementById('reg').addEventListener("click", (event) => {
       event.stopPropagation();
-
       renderLogin();
     });
   };

@@ -51,8 +51,8 @@ export const postAPI = (inputName, inputText) => {
             Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-            name: searchSwap(inputName.value),
-            text: searchSwap(inputText.value),
+            name: inputName.value,
+            text: inputText.value,
             // forceError: true,
         }),
     }).then((response) => {
@@ -67,9 +67,6 @@ export const postAPI = (inputName, inputText) => {
             post();
             throw new Error("Сервер упал 500");
         }
-    }).then(() => {
-        inputName.value = "";
-        inputText.value = "";
     });
 };
 

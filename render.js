@@ -9,8 +9,8 @@ const initClickHandler = (comments) => {
   buttonElement.addEventListener("click", (event) => {
     event.stopPropagation();
 
-    const inputName = document.getElementById("nameTextId");
-    const inputText = document.getElementById("commentTextId");
+    var inputName = document.getElementById("nameTextId");
+    var inputText = document.getElementById("commentTextId");
     inputText.classList.remove("error");
     inputName.classList.remove("error");
 

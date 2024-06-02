@@ -55,8 +55,6 @@ export const renderReg = () => {
             console.log(token);
         }).then(() => {
             getAPI();
-        }).then(() => {
-          loadingForm.classList.add('load');
         });
     });
 };

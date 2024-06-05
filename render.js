@@ -30,15 +30,14 @@ const initClickHandler = (comments) => {
       }
     };
 
-    searchSwap(inputName);
-    searchSwap(inputText);
+    searchSwap(inputName.value);
+    searchSwap(inputText.value);
     postAPI(inputName, inputText).then(() => {
       document.getElementById('loading').classList.remove('load');
       document.getElementById('form').classList.add('load');
     }).then(() => {
       return getAPI();
     }).then(() => {
-      loadingForm.classList.add('load');
       checkInputForm({ inputName, inputText, buttonElement });
     }).then(() => {
       inputName = "";

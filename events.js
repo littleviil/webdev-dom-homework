@@ -3,7 +3,7 @@ import { render } from './render.js';
 //Замена спец.символов
 export const searchSwap = (comment) => {
     return comment.replaceAll("<", "&lt").replaceAll(">", "&gt").replaceAll("✦♡", "<div class='quote'>").replaceAll("♡✦", "</div>");
-}
+};
 
 //Лайки
 export const addLikeClickButton = (comments) => {

@@ -1,7 +1,7 @@
-import { inputName, inputText, deleteButton, buttonElement} from './dom.js';
+import { deleteButton } from './dom.js';
 
 //Блокировка кнопки "Написать"
-export function checkInputForm() {
+export function checkInputForm({inputName, inputText, buttonElement}) {
     if (inputName.value.trim() === "" || inputText.value.trim() === "") {
         //Блокировка и серый
         buttonElement.disabled = true;

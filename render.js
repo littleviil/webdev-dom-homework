@@ -12,8 +12,15 @@ const initClickHandler = (comments) => {
 
     var inputName = document.getElementById("nameTextId");
     var inputText = document.getElementById("commentTextId");
+
     inputText.classList.remove("error");
     inputName.classList.remove("error");
+
+    inputName.value.trim();
+    inputText.value.trim();
+
+    // inputName.value.trimStart().trimEnd();
+    // inputText.value.trimStart().trimEnd();
 
     if ((inputText.value.length === 0) || (inputName.value.length === 0)) {
       if ((inputText.value.length === 0) && (inputName.value.length === 0)) {

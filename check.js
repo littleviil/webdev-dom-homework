@@ -25,9 +25,3 @@ export function checkDeleteButton(comments) {
         deleteButton.classList.remove("active-input");
     }
 };
-
-// // Удаление пробелов
-// export function trimText({inputName, inputText}) {
-//     inputName.value.trim();
-//     inputText.value.trim();
-// };

@@ -16,9 +16,6 @@ const initClickHandler = (comments) => {
     inputText.classList.remove("error");
     inputName.classList.remove("error");
 
-    inputName.value.trim();
-    inputText.value.trim();
-
     if ((inputText.value.trim() === "") || (inputName.value.trim() === "")) {
       if ((inputText.value.trim() === "") && (inputName.value.trim() === "")) {
         inputName.classList.add("error");

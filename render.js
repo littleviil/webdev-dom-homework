@@ -19,10 +19,6 @@ const initClickHandler = (comments) => {
     inputName.value.trim();
     inputText.value.trim();
 
-    if ((!inputName.value.trim().length) && (!inputText.value.trim().length)) {
-      response.status === 400;
-    }
-
     if ((inputText.value.trim() === "") || (inputName.value.trim() === "")) {
       if ((inputText.value.trim() === "") && (inputName.value.trim() === "")) {
         inputName.classList.add("error");

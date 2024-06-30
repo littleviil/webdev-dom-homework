@@ -33,7 +33,7 @@ export const getAPI = () => {
             const currentTime = new Date(user.date).toLocaleTimeString('ru-RU');
             return {
                 author: user.author.name,
-                date: `${currentDate} ${currentTime}`,
+                date: user.date,
                 text: user.text,
                 likes: user.likes,
                 isLiked: user.isLiked,

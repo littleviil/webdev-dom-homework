@@ -20,7 +20,7 @@ export const addLikeClickButton = (comments) => {
                 comments[index].likes--;
                 comments[index].isLiked = false;
             }
-            render(comments);
+            // render(comments);
         });
     };
 };
@@ -58,7 +58,10 @@ export const editComments = (comments) => {
             });
         });
     };
+};
 
+export const answerComments = (comments) => {
+    var li = document.getElementById("comments").getElementsByTagName("li");
     for (const liClick of li) {
         liClick.addEventListener("click", (event) => {
             event.stopPropagation();

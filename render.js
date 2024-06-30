@@ -2,6 +2,7 @@ import { postAPI, getAPI, token, userName } from './API.js';
 import { checkInputForm } from './check.js';
 import { renderLogin } from './renderLogin.js'
 import { initEvent, searchSwap } from './events.js';
+import { format } from "date-fns";
 
 const initClickHandler = (comments) => {
   //Ввод
@@ -11,20 +12,21 @@ const initClickHandler = (comments) => {
 
     var inputName = document.getElementById("nameTextId");
     var inputText = document.getElementById("commentTextId");
+
     inputText.classList.remove("error");
     inputName.classList.remove("error");
 
-    if ((inputText.value.length === 0) || (inputName.value.length === 0)) {
-      if ((inputText.value.length === 0) && (inputName.value.length === 0)) {
+    if ((inputText.value.trim() === "") || (inputName.value.trim() === "")) {
+      if ((inputText.value.trim() === "") && (inputName.value.trim() === "")) {
         inputName.classList.add("error");
         inputText.classList.add("error");
         return;
       }
-      else if (inputName.value.length === 0) {
+      else if (inputName.value.trim() === "") {
         inputName.classList.add("error");
         return;
       }
-      else if (inputText.value.length === 0) {
+      else if (inputText.value.trim() === "") {
         inputText.classList.add("error");
         return;
       }
@@ -56,7 +58,7 @@ const render = (comments) => {
     return `<li class="comment" id="comment-block" data-index="${index}">
         <div class="comment-header" data-index="${index}">
           <div>${user.author}</div>
-          <div>${user.date}</div>
+          <div>${format(user.date, "yyyy-MM-dd hh.mm.ss")}</div>
         </div>
         <div class="comment-body">
           <div class="comment-text">
